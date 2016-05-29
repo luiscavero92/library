@@ -1,0 +1,777 @@
+#%RAML 0.8
+title: Glass - App
+version: v1
+baseUri: http://localhost:8000
+
+/appversions:
+  displayName: App Versions
+  get:
+    description: Retrieve a list of apps's versions
+    responses:
+      200:
+        body:
+          application/json:
+            schema: |
+              {
+              "$schema": "http://json-schema.org/draft-03/schema",
+              "type": "array",
+              "description": "The app list"
+              }
+            example: |
+              [
+                {
+                  "id": 1,
+                  "version": "1.0",
+                  "name": "Streye valu",
+                  "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu/1.0/EBHS_2016-05-02_10:05:50.apk",
+                  "package": "com.cks.EBHS"
+                },
+                {
+                  "id": 2,
+                  "version": "1.1",
+                  "name": "Streye valu",
+                  "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu/1.1/app-debug_2016-05-02_10:05:01.apk",
+                  "package": "com.example.pedro.yuvtobitmap"
+                }
+              ]
+      404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "Not Found"
+                  }
+                }
+
+      500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+
+  post:
+    description: Create a new app's version
+    body:
+      multipart/form-data:
+        formParameters:
+          file:
+            description: The file to be uploaded
+            required: true
+            type: file
+          app_version[name]:
+            description: The application name (this field requires the form name)
+            required: true
+            type: string
+
+    responses:
+      201:
+        body:
+          application/json:
+            example: |
+              {
+                "id": 1,
+                "version": "1.0",
+                "name": "Streye Team",
+                "internal_url": "/var/app/app/../var/uploads/app_files/Streye_Team/1.0/EBHS_2016-05-02_13:05:23.apk",
+                "package": "com.cks.EBHS"
+              }
+      404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "Not Found"
+                  }
+                }
+
+      500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+  /{id}:
+    uriParameters:
+      id:
+        description: The uniquely number which indentifies this app's version
+        type: integer
+    get:
+      description: Retrieve the specified app's version
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "id": 1,
+                  "version": "1.0",
+                  "name": "Streye Team",
+                  "internal_url": "/var/app/app/../var/uploads/app_files/Streye_Team/1.0/EBHS_2016-05-02_13:05:23.apk",
+                  "package": "com.cks.EBHS"
+                }
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "Not Found"
+                  }
+                }
+
+        500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+    delete:
+      description: Delete the specified app's version
+      responses:
+        204:
+
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "Not Found"
+                  }
+                }
+
+        500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+                
+    patch:
+      description: Update the specified app's version
+      body:
+        application/json:
+          schema: |
+            "$schema": "http://json-schema.org/draft-03/schema",
+            "type": "object",
+            "description": "A new app's version",
+            "properties":
+              {
+                "name": {
+                  "type": "string",
+                  "required": false
+                }
+              }
+            }
+          example: |
+            {
+            "app_version":
+              {
+              "name": "Streye Luis"
+              }
+            }
+          
+      responses:
+        204:
+          
+        400:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 400,
+                    "message": "Bad Request"
+                  }
+                }
+
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "Not Found"
+                  }
+                }
+
+        500:
+            body:
+              application/json:
+                example: |
+                  {
+                    "error": {
+                      "code": 500,
+                      "message": "Internal Server Error"
+                    }
+                  }
+
+/appcompanies:
+  displayName: Company - AppVersions Relationship
+  get:
+    description: Retrieve the list of companies and apps relationship
+    responses:
+      200:
+          body:
+            application/json:
+              example: |
+                [
+                  {
+                    "id": 7,
+                    "company": 1,
+                    "application": {
+                      "id": 1,
+                      "version": "1.1",
+                      "name": "Streye Team",
+                      "internal_url": "/var/app/app/../var/uploads/app_files/Streye_Team/1.1/app-debug_2016-05-02_12:05:55.apk",
+                      "package": "com.example.pedro.yuvtobitmap"
+                    }
+                  },
+                  {
+                    "id": 8,
+                    "company": 1,
+                    "application": {
+                      "id": 1,
+                      "version": "1.0",
+                      "name": "Streye valu",
+                      "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu/1.0/EBHS_2016-05-02_10:05:50.apk",
+                      "package": "com.cks.EBHS"
+                    }
+                  }
+                ]
+      404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "Not Found"
+                  }
+                }
+
+      500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+
+  post:
+    description: Create a new companies and apps relationship
+    body:
+      application/json:
+        schema: |
+          {
+          "$schema": "http://json-schema.org/draft-03/schema",
+          "type": "object",
+          "description": "A new glass",
+          "properties":
+            {
+              "company": {"type": "integer"},
+              "application":{"type": "integer"}
+            }
+          }
+        example: |
+          {
+            "app_company":
+              {
+              "company": 1,
+              "application": 3
+              }
+          }
+    responses:
+      201:
+        body:
+          application/json:
+           example: |
+                {
+                  "id": 9,
+                  "company": 1,
+                  "application": {
+                    "id": 3,
+                    "version": "1.1",
+                    "name": "Streye valu2",
+                    "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu2/1.1/app-debug_2016-05-02_12:05:42.apk",
+                    "package": "com.example.pedro.yuvtobitmap"
+                  }
+                }
+
+      400:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 400,
+                    "message": "Bad Request"
+                  }
+                }
+      404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "Not Found"
+                  }
+                }
+
+      500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+  /{id_appcompany}:
+    uriParameters:
+        id_appcompany:
+          description: The uniquely number which indentifies the app - company relationship
+          type: integer
+
+    get:
+      description: Retrieve the specified company and apps relationship
+      responses:
+        200:
+          body:
+            application/json:
+             example: |
+                {
+                  "id": 7,
+                  "company": 1,
+                  "application": {
+                    "id": 4,
+                    "version": "1.1",
+                    "name": "Streye Luis",
+                    "internal_url": "/var/app/app/../var/uploads/app_files/Streye_jajaja/1.1/app-debug_2016-05-02_12:05:55.apk",
+                    "package": "com.example.pedro.yuvtobitmap"
+                  }
+                }
+        404:
+            body:
+              application/json:
+                example: |
+                  {
+                    "error": {
+                      "code": 404,
+                      "message": "Not Found"
+                    }
+                  }
+
+        500:
+            body:
+              application/json:
+                example: |
+                  {
+                    "error": {
+                      "code": 500,
+                      "message": "Internal Server Error"
+                    }
+                  }
+
+    delete:
+      description: Delete the specified app - company relationship
+      responses:
+        204:
+
+        500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+/allcompanyapps:
+  displayName: AppVersions of a Company
+  /{id_company}:
+    uriParameters:
+      id_company:
+        description: The uniquely number which indentifies the company
+        type: integer
+
+    get:
+      description: Retrieve all apps of the specified company
+      responses:
+        200:
+          body:
+            application/json:
+             example: |
+                [
+                  {
+                    "id": 8,
+                    "company": 1,
+                    "application": {
+                      "id": 1,
+                      "version": "1.0",
+                      "name": "Streye valu",
+                      "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu/1.0/EBHS_2016-05-02_10:05:50.apk",
+                      "package": "com.cks.EBHS"
+                    }
+                  },
+                  {
+                    "id": 9,
+                    "company": 1,
+                    "application": {
+                      "id": 3,
+                      "version": "1.1",
+                      "name": "Streye valu2",
+                      "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu2/1.1/app-debug_2016-05-02_12:05:42.apk",
+                      "package": "com.example.pedro.yuvtobitmap"
+                    }
+                  }
+                ]
+        404:
+            body:
+              application/json:
+                example: |
+                  {
+                    "error": {
+                      "code": 404,
+                      "message": "Not Found"
+                    }
+                  }
+
+        500:
+            body:
+              application/json:
+                example: |
+                  {
+                    "error": {
+                      "code": 500,
+                      "message": "Internal Server Error"
+                    }
+                  }
+
+/appglasses:
+  displayName: Glass - AppVersions Relationship
+  get:
+    description: Retrieve the list of glasses and apps relationship
+    responses:
+      200:
+          body:
+            application/json:
+              example: |
+                [
+                  {
+                    "id": 2,
+                    "glass": "111111",
+                    "application": {
+                      "id": 1,
+                      "version": "1.0",
+                      "name": "Streye valu",
+                      "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu/1.0/EBHS_2016-05-02_10:05:50.apk",
+                      "package": "com.cks.EBHS"
+                    },
+                    "company": "1"
+                  }
+                ]
+      404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "Not Found"
+                  }
+                }
+
+      500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+
+  post:
+    description: Create a new glasses and apps relationship
+    body:
+      application/json:
+        schema: |
+          {
+          "$schema": "http://json-schema.org/draft-03/schema",
+          "type": "object",
+          "description": "A new glass",
+          "properties":
+            {
+              "glass": {"type": "string"},
+              "application":{"type": "integer"},
+              "company": {"type": "integer"}
+            }
+          }
+        example: |
+          {
+            "glass_app":
+              {
+                "glass": 111111,
+                "application": 3,
+                "company": 1
+              }
+          }
+
+    responses:
+      201:
+        body:
+          application/json:
+           example: |
+                {
+                  "id": 4,
+                  "glass": "111111",
+                  "application": {
+                    "id": 3,
+                    "version": "1.1",
+                    "name": "Streye valu2",
+                    "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu2/1.1/app-debug_2016-05-02_12:05:42.apk",
+                    "package": "com.example.pedro.yuvtobitmap"
+                  },
+                  "company": "1"
+                }
+
+      400:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 400,
+                    "message": "Bad Request"
+                  }
+                }
+      404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "Not Found"
+                  }
+                }
+
+      500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+  /{id_appcompany}:
+    uriParameters:
+        id_appcompany:
+          description: The uniquely number which indentifies the app - glass relationship
+          type: integer
+
+    get:
+      description: Retrieve the specified glass and apps relationship
+      responses:
+        200:
+          body:
+            application/json:
+             example: |
+                {
+                  "id": 4,
+                  "glass": "111111",
+                  "application": {
+                    "id": 3,
+                    "version": "1.1",
+                    "name": "Streye valu2",
+                    "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu2/1.1/app-debug_2016-05-02_12:05:42.apk",
+                    "package": "com.example.pedro.yuvtobitmap"
+                  },
+                  "company": "1"
+                }
+        404:
+            body:
+              application/json:
+                example: |
+                  {
+                    "error": {
+                      "code": 404,
+                      "message": "Not Found"
+                    }
+                  }
+
+        500:
+            body:
+              application/json:
+                example: |
+                  {
+                    "error": {
+                      "code": 500,
+                      "message": "Internal Server Error"
+                    }
+                  }
+
+    delete:
+      description: Delete the specified app - glass relationship
+      responses:
+        204:
+
+        500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+/allglassapps:
+  displayName: AppVersions of a Glass
+  /{id_glass}:
+    uriParameters:
+      id_glass:
+        description: The uniquely number which indentifies the glass
+        type: integer
+
+    get:
+      description: Retrieve all apps of the specified glass
+      responses:
+        200:
+          body:
+            application/json:
+             example: |
+                [
+                  {
+                    "id": 2,
+                    "glass": "111111",
+                    "application": {
+                      "id": 1,
+                      "version": "1.0",
+                      "name": "Streye valu",
+                      "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu/1.0/EBHS_2016-05-02_10:05:50.apk",
+                      "package": "com.cks.EBHS"
+                    },
+                    "company": "1"
+                  }
+                ]
+        404:
+            body:
+              application/json:
+                example: |
+                  {
+                    "error": {
+                      "code": 404,
+                      "message": "Not Found"
+                    }
+                  }
+
+        500:
+            body:
+              application/json:
+                example: |
+                  {
+                    "error": {
+                      "code": 500,
+                      "message": "Internal Server Error"
+                    }
+                  }
+/glassupdates:
+  displayName: Glass updates
+  /{serial_number}:
+    uriParameters:
+      serial_number:
+        description: The uniquely serial number which indentifies the glass
+        type: string
+
+    get:
+      description: Retrieve all apps of the specified glass
+      responses:
+        200:
+          body:
+            application/json:
+             example: |
+                {
+                  "buildInformation": [
+                    {
+                      "action": "INSTALL",
+                      "build_id": 1,
+                      "build_name": "Streye valu",
+                      "build_url": "localhost/appdownloads/1",
+                      "package_name": "com.cks.EBHS"
+                    },
+                    {
+                      "action": "UNINSTALL",
+                      "build_id": 3,
+                      "build_name": "Streye valu2",
+                      "build_url": "localhost/appdownloads/3",
+                      "package_name": "com.example.pedro.yuvtobitmap"
+                    },
+                    {
+                      "action": "UNINSTALL",
+                      "build_id": 4,
+                      "build_name": "Streye Luis",
+                      "build_url": "localhost/appdownloads/4",
+                      "package_name": "com.example.pedro.yuvtobitmap"
+                    }
+                  ]
+                }
+        404:
+            body:
+              application/json:
+                example: |
+                  []
+
+        500:
+            body:
+              application/json:
+                example: |
+                  {
+                    "error": {
+                      "code": 500,
+                      "message": "Internal Server Error"
+                    }
+                  }

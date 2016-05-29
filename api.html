@@ -1,0 +1,572 @@
+<!DOCTYPE HTML><html><head><title>Glass - App API documentation</title><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="https://github.com/kevinrenskers/raml2html 2.4.0"><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/default.min.css"><script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script><script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js"></script><script type="text/javascript">
+      $(document).ready(function() {
+        $('.page-header pre code, .top-resource-description pre code').each(function(i, block) {
+          hljs.highlightBlock(block);
+        });
+
+        $('[data-toggle]').click(function() {
+          var selector = $(this).data('target') + ' pre code';
+          $(selector).each(function(i, block) {
+            hljs.highlightBlock(block);
+          });
+        });
+
+        // open modal on hashes like #_action_get
+        $(window).bind('hashchange', function(e) {
+          var anchor_id = document.location.hash.substr(1); //strip #
+          var element = $('#' + anchor_id);
+
+          // do we have such element + is it a modal?  --> show it
+          if (element.length && element.hasClass('modal')) {
+            element.modal('show');
+          }
+        });
+
+        // execute hashchange on first page load
+        $(window).trigger('hashchange');
+
+        // remove url fragment on modal hide
+        $('.modal').on('hidden.bs.modal', function() {
+          try {
+            if (history && history.replaceState) {
+                history.replaceState({}, '', '#');
+            }
+          } catch(e) {}
+        });
+      });
+    </script><style>
+      .hljs {
+        background: transparent;
+      }
+      .parent {
+        color: #999;
+      }
+      .list-group-item > .badge {
+        float: none;
+        margin-right: 6px;
+      }
+      .panel-title > .methods {
+        float: right;
+      }
+      .badge {
+        border-radius: 0;
+        text-transform: uppercase;
+        width: 70px;
+        font-weight: normal;
+        color: #f3f3f6;
+        line-height: normal;
+      }
+      .badge_get {
+        background-color: #63a8e2;
+      }
+      .badge_post {
+        background-color: #6cbd7d;
+      }
+      .badge_put {
+        background-color: #22bac4;
+      }
+      .badge_delete {
+        background-color: #d26460;
+      }
+      .badge_patch {
+        background-color: #ccc444;
+      }
+      .list-group, .panel-group {
+        margin-bottom: 0;
+      }
+      .panel-group .panel+.panel-white {
+        margin-top: 0;
+      }
+      .panel-group .panel-white {
+        border-bottom: 1px solid #F5F5F5;
+        border-radius: 0;
+      }
+      .panel-white:last-child {
+        border-bottom-color: white;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+      }
+      .panel-white .panel-heading {
+        background: white;
+      }
+      .tab-pane ul {
+        padding-left: 2em;
+      }
+      .tab-pane h2 {
+        font-size: 1.2em;
+        padding-bottom: 4px;
+        border-bottom: 1px solid #ddd;
+      }
+      .tab-pane h3 {
+        font-size: 1.1em;
+      }
+      .tab-content {
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+      }
+      #sidebar {
+        margin-top: 30px;
+        padding-right: 5px;
+        overflow: auto;
+        height: 90%;
+      }
+      .top-resource-description {
+        border-bottom: 1px solid #ddd;
+        background: #fcfcfc;
+        padding: 15px 15px 0 15px;
+        margin: -15px -15px 10px -15px;
+      }
+      .resource-description {
+        border-bottom: 1px solid #fcfcfc;
+        background: #fcfcfc;
+        padding: 15px 15px 0 15px;
+        margin: -15px -15px 10px -15px;
+      }
+      .resource-description p:last-child {
+        margin: 0;
+      }
+      .list-group .badge {
+        float: left;
+      }
+      .method_description {
+        margin-left: 85px;
+      }
+      .method_description p:last-child {
+        margin: 0;
+      }
+      .list-group-item {
+        cursor: pointer;
+      }
+      .list-group-item:hover {
+        background-color: #f5f5f5;
+      }
+    </style></head><body data-spy="scroll" data-target="#sidebar"><div class="container"><div class="row"><div class="col-md-9" role="main"><div class="page-header"><h1>Glass - App API documentation <small>version v1</small></h1><p>http://localhost:8000</p></div><div class="panel panel-default"><div class="panel-heading"><h3 id="appversions" class="panel-title">App Versions</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_appversions"><span class="parent"></span>/appversions</a> <span class="methods"><a href="#appversions_get"><span class="badge badge_get">get</span></a> <a href="#appversions_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_appversions" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#appversions_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Retrieve a list of apps&#39;s versions</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#appversions_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"><p>Create a new app&#39;s version</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="appversions_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent"></span>/appversions</h4></div><div class="modal-body"><div class="alert alert-info"><p>Retrieve a list of apps&#39;s versions</p></div><ul class="nav nav-tabs"><li class="active"><a href="#appversions_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="appversions_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+"$schema": "http://json-schema.org/draft-03/schema",
+"type": "array",
+"description": "The app list"
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>[
+  {
+    "id": 1,
+    "version": "1.0",
+    "name": "Streye valu",
+    "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu/1.0/EBHS_2016-05-02_10:05:50.apk",
+    "package": "com.cks.EBHS"
+  },
+  {
+    "id": 2,
+    "version": "1.1",
+    "name": "Streye valu",
+    "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu/1.1/app-debug_2016-05-02_10:05:01.apk",
+    "package": "com.example.pedro.yuvtobitmap"
+  }
+]
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 404,
+    "message": "Not Found"
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 500,
+    "message": "Internal Server Error"
+  }
+}
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="appversions_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent"></span>/appversions</h4></div><div class="modal-body"><div class="alert alert-info"><p>Create a new app&#39;s version</p></div><ul class="nav nav-tabs"><li class="active"><a href="#appversions_post_request" data-toggle="tab">Request</a></li><li><a href="#appversions_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="appversions_post_request"><h3>Body</h3><p><strong>Type: multipart/form-data</strong></p><strong>Form Parameters</strong><ul><li><strong>file</strong>: <em>required (file)</em><p>The file to be uploaded</p></li><li><strong>app_version[name]</strong>: <em>required (string)</em><p>The application name (this field requires the form name)</p></li></ul></div><div class="tab-pane" id="appversions_post_response"><h2>HTTP status code <a href="http://httpstatus.es/201" target="_blank">201</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "id": 1,
+  "version": "1.0",
+  "name": "Streye Team",
+  "internal_url": "/var/app/app/../var/uploads/app_files/Streye_Team/1.0/EBHS_2016-05-02_13:05:23.apk",
+  "package": "com.cks.EBHS"
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 404,
+    "message": "Not Found"
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 500,
+    "message": "Internal Server Error"
+  }
+}
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_appversions__id_"><span class="parent">/appversions</span>/{id}</a> <span class="methods"><a href="#appversions__id__get"><span class="badge badge_get">get</span></a> <a href="#appversions__id__delete"><span class="badge badge_delete">delete</span></a> <a href="#appversions__id__patch"><span class="badge badge_patch">patch</span></a></span></h4></div><div id="panel_appversions__id_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#appversions__id__get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Retrieve the specified app&#39;s version</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#appversions__id__delete'" class="list-group-item"><span class="badge badge_delete">delete</span><div class="method_description"><p>Delete the specified app&#39;s version</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#appversions__id__patch'" class="list-group-item"><span class="badge badge_patch">patch</span><div class="method_description"><p>Update the specified app&#39;s version</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="appversions__id__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/appversions</span>/{id}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Retrieve the specified app&#39;s version</p></div><ul class="nav nav-tabs"><li class="active"><a href="#appversions__id__get_request" data-toggle="tab">Request</a></li><li><a href="#appversions__id__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="appversions__id__get_request"><h3>URI Parameters</h3><ul><li><strong>id</strong>: <em>required (integer)</em><p>The uniquely number which indentifies this app&#39;s version</p></li></ul></div><div class="tab-pane" id="appversions__id__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "id": 1,
+  "version": "1.0",
+  "name": "Streye Team",
+  "internal_url": "/var/app/app/../var/uploads/app_files/Streye_Team/1.0/EBHS_2016-05-02_13:05:23.apk",
+  "package": "com.cks.EBHS"
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 404,
+    "message": "Not Found"
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 500,
+    "message": "Internal Server Error"
+  }
+}
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="appversions__id__delete"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_delete">delete</span> <span class="parent">/appversions</span>/{id}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Delete the specified app&#39;s version</p></div><ul class="nav nav-tabs"><li class="active"><a href="#appversions__id__delete_request" data-toggle="tab">Request</a></li><li><a href="#appversions__id__delete_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="appversions__id__delete_request"><h3>URI Parameters</h3><ul><li><strong>id</strong>: <em>required (integer)</em><p>The uniquely number which indentifies this app&#39;s version</p></li></ul></div><div class="tab-pane" id="appversions__id__delete_response"><h2>HTTP status code <a href="http://httpstatus.es/204" target="_blank">204</a></h2><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 404,
+    "message": "Not Found"
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 500,
+    "message": "Internal Server Error"
+  }
+}
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="appversions__id__patch"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_patch">patch</span> <span class="parent">/appversions</span>/{id}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Update the specified app&#39;s version</p></div><ul class="nav nav-tabs"><li class="active"><a href="#appversions__id__patch_request" data-toggle="tab">Request</a></li><li><a href="#appversions__id__patch_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="appversions__id__patch_request"><h3>URI Parameters</h3><ul><li><strong>id</strong>: <em>required (integer)</em><p>The uniquely number which indentifies this app&#39;s version</p></li></ul><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>"$schema": "http://json-schema.org/draft-03/schema",
+"type": "object",
+"description": "A new app&#39;s version",
+"properties":
+  {
+    "name": {
+      "type": "string",
+      "required": false
+    }
+  }
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+"app_version":
+  {
+  "name": "Streye Luis"
+  }
+}
+</code></pre></div><div class="tab-pane" id="appversions__id__patch_response"><h2>HTTP status code <a href="http://httpstatus.es/204" target="_blank">204</a></h2><h2>HTTP status code <a href="http://httpstatus.es/400" target="_blank">400</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 400,
+    "message": "Bad Request"
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 404,
+    "message": "Not Found"
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 500,
+    "message": "Internal Server Error"
+  }
+}
+</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="appcompanies" class="panel-title">Company - AppVersions Relationship</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_appcompanies"><span class="parent"></span>/appcompanies</a> <span class="methods"><a href="#appcompanies_get"><span class="badge badge_get">get</span></a> <a href="#appcompanies_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_appcompanies" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#appcompanies_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Retrieve the list of companies and apps relationship</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#appcompanies_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"><p>Create a new companies and apps relationship</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="appcompanies_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent"></span>/appcompanies</h4></div><div class="modal-body"><div class="alert alert-info"><p>Retrieve the list of companies and apps relationship</p></div><ul class="nav nav-tabs"><li class="active"><a href="#appcompanies_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="appcompanies_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>[
+  {
+    "id": 7,
+    "company": 1,
+    "application": {
+      "id": 1,
+      "version": "1.1",
+      "name": "Streye Team",
+      "internal_url": "/var/app/app/../var/uploads/app_files/Streye_Team/1.1/app-debug_2016-05-02_12:05:55.apk",
+      "package": "com.example.pedro.yuvtobitmap"
+    }
+  },
+  {
+    "id": 8,
+    "company": 1,
+    "application": {
+      "id": 1,
+      "version": "1.0",
+      "name": "Streye valu",
+      "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu/1.0/EBHS_2016-05-02_10:05:50.apk",
+      "package": "com.cks.EBHS"
+    }
+  }
+]
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 404,
+    "message": "Not Found"
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 500,
+    "message": "Internal Server Error"
+  }
+}
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="appcompanies_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent"></span>/appcompanies</h4></div><div class="modal-body"><div class="alert alert-info"><p>Create a new companies and apps relationship</p></div><ul class="nav nav-tabs"><li class="active"><a href="#appcompanies_post_request" data-toggle="tab">Request</a></li><li><a href="#appcompanies_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="appcompanies_post_request"><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+"$schema": "http://json-schema.org/draft-03/schema",
+"type": "object",
+"description": "A new glass",
+"properties":
+  {
+    "company": {"type": "integer"},
+    "application":{"type": "integer"}
+  }
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "app_company":
+    {
+    "company": 1,
+    "application": 3
+    }
+}
+</code></pre></div><div class="tab-pane" id="appcompanies_post_response"><h2>HTTP status code <a href="http://httpstatus.es/201" target="_blank">201</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "id": 9,
+  "company": 1,
+  "application": {
+    "id": 3,
+    "version": "1.1",
+    "name": "Streye valu2",
+    "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu2/1.1/app-debug_2016-05-02_12:05:42.apk",
+    "package": "com.example.pedro.yuvtobitmap"
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/400" target="_blank">400</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 400,
+    "message": "Bad Request"
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 404,
+    "message": "Not Found"
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 500,
+    "message": "Internal Server Error"
+  }
+}
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_appcompanies__id_appcompany_"><span class="parent">/appcompanies</span>/{id_appcompany}</a> <span class="methods"><a href="#appcompanies__id_appcompany__get"><span class="badge badge_get">get</span></a> <a href="#appcompanies__id_appcompany__delete"><span class="badge badge_delete">delete</span></a></span></h4></div><div id="panel_appcompanies__id_appcompany_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#appcompanies__id_appcompany__get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Retrieve the specified company and apps relationship</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#appcompanies__id_appcompany__delete'" class="list-group-item"><span class="badge badge_delete">delete</span><div class="method_description"><p>Delete the specified app - company relationship</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="appcompanies__id_appcompany__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/appcompanies</span>/{id_appcompany}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Retrieve the specified company and apps relationship</p></div><ul class="nav nav-tabs"><li class="active"><a href="#appcompanies__id_appcompany__get_request" data-toggle="tab">Request</a></li><li><a href="#appcompanies__id_appcompany__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="appcompanies__id_appcompany__get_request"><h3>URI Parameters</h3><ul><li><strong>id_appcompany</strong>: <em>required (integer)</em><p>The uniquely number which indentifies the app - company relationship</p></li></ul></div><div class="tab-pane" id="appcompanies__id_appcompany__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "id": 7,
+  "company": 1,
+  "application": {
+    "id": 4,
+    "version": "1.1",
+    "name": "Streye Luis",
+    "internal_url": "/var/app/app/../var/uploads/app_files/Streye_jajaja/1.1/app-debug_2016-05-02_12:05:55.apk",
+    "package": "com.example.pedro.yuvtobitmap"
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 404,
+    "message": "Not Found"
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 500,
+    "message": "Internal Server Error"
+  }
+}
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="appcompanies__id_appcompany__delete"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_delete">delete</span> <span class="parent">/appcompanies</span>/{id_appcompany}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Delete the specified app - company relationship</p></div><ul class="nav nav-tabs"><li class="active"><a href="#appcompanies__id_appcompany__delete_request" data-toggle="tab">Request</a></li><li><a href="#appcompanies__id_appcompany__delete_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="appcompanies__id_appcompany__delete_request"><h3>URI Parameters</h3><ul><li><strong>id_appcompany</strong>: <em>required (integer)</em><p>The uniquely number which indentifies the app - company relationship</p></li></ul></div><div class="tab-pane" id="appcompanies__id_appcompany__delete_response"><h2>HTTP status code <a href="http://httpstatus.es/204" target="_blank">204</a></h2><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 500,
+    "message": "Internal Server Error"
+  }
+}
+</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="allcompanyapps" class="panel-title">AppVersions of a Company</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_allcompanyapps__id_company_"><span class="parent">/allcompanyapps</span>/{id_company}</a> <span class="methods"><a href="#allcompanyapps__id_company__get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_allcompanyapps__id_company_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#allcompanyapps__id_company__get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Retrieve all apps of the specified company</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="allcompanyapps__id_company__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/allcompanyapps</span>/{id_company}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Retrieve all apps of the specified company</p></div><ul class="nav nav-tabs"><li class="active"><a href="#allcompanyapps__id_company__get_request" data-toggle="tab">Request</a></li><li><a href="#allcompanyapps__id_company__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="allcompanyapps__id_company__get_request"><h3>URI Parameters</h3><ul><li><strong>id_company</strong>: <em>required (integer)</em><p>The uniquely number which indentifies the company</p></li></ul></div><div class="tab-pane" id="allcompanyapps__id_company__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>[
+  {
+    "id": 8,
+    "company": 1,
+    "application": {
+      "id": 1,
+      "version": "1.0",
+      "name": "Streye valu",
+      "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu/1.0/EBHS_2016-05-02_10:05:50.apk",
+      "package": "com.cks.EBHS"
+    }
+  },
+  {
+    "id": 9,
+    "company": 1,
+    "application": {
+      "id": 3,
+      "version": "1.1",
+      "name": "Streye valu2",
+      "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu2/1.1/app-debug_2016-05-02_12:05:42.apk",
+      "package": "com.example.pedro.yuvtobitmap"
+    }
+  }
+]
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 404,
+    "message": "Not Found"
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 500,
+    "message": "Internal Server Error"
+  }
+}
+</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="appglasses" class="panel-title">Glass - AppVersions Relationship</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_appglasses"><span class="parent"></span>/appglasses</a> <span class="methods"><a href="#appglasses_get"><span class="badge badge_get">get</span></a> <a href="#appglasses_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_appglasses" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#appglasses_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Retrieve the list of glasses and apps relationship</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#appglasses_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"><p>Create a new glasses and apps relationship</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="appglasses_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent"></span>/appglasses</h4></div><div class="modal-body"><div class="alert alert-info"><p>Retrieve the list of glasses and apps relationship</p></div><ul class="nav nav-tabs"><li class="active"><a href="#appglasses_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="appglasses_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>[
+  {
+    "id": 2,
+    "glass": "111111",
+    "application": {
+      "id": 1,
+      "version": "1.0",
+      "name": "Streye valu",
+      "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu/1.0/EBHS_2016-05-02_10:05:50.apk",
+      "package": "com.cks.EBHS"
+    },
+    "company": "1"
+  }
+]
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 404,
+    "message": "Not Found"
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 500,
+    "message": "Internal Server Error"
+  }
+}
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="appglasses_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent"></span>/appglasses</h4></div><div class="modal-body"><div class="alert alert-info"><p>Create a new glasses and apps relationship</p></div><ul class="nav nav-tabs"><li class="active"><a href="#appglasses_post_request" data-toggle="tab">Request</a></li><li><a href="#appglasses_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="appglasses_post_request"><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+"$schema": "http://json-schema.org/draft-03/schema",
+"type": "object",
+"description": "A new glass",
+"properties":
+  {
+    "glass": {"type": "string"},
+    "application":{"type": "integer"},
+    "company": {"type": "integer"}
+  }
+}
+</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "glass_app":
+    {
+      "glass": 111111,
+      "application": 3,
+      "company": 1
+    }
+}
+</code></pre></div><div class="tab-pane" id="appglasses_post_response"><h2>HTTP status code <a href="http://httpstatus.es/201" target="_blank">201</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "id": 4,
+  "glass": "111111",
+  "application": {
+    "id": 3,
+    "version": "1.1",
+    "name": "Streye valu2",
+    "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu2/1.1/app-debug_2016-05-02_12:05:42.apk",
+    "package": "com.example.pedro.yuvtobitmap"
+  },
+  "company": "1"
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/400" target="_blank">400</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 400,
+    "message": "Bad Request"
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 404,
+    "message": "Not Found"
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 500,
+    "message": "Internal Server Error"
+  }
+}
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_appglasses__id_appcompany_"><span class="parent">/appglasses</span>/{id_appcompany}</a> <span class="methods"><a href="#appglasses__id_appcompany__get"><span class="badge badge_get">get</span></a> <a href="#appglasses__id_appcompany__delete"><span class="badge badge_delete">delete</span></a></span></h4></div><div id="panel_appglasses__id_appcompany_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#appglasses__id_appcompany__get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Retrieve the specified glass and apps relationship</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#appglasses__id_appcompany__delete'" class="list-group-item"><span class="badge badge_delete">delete</span><div class="method_description"><p>Delete the specified app - glass relationship</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="appglasses__id_appcompany__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/appglasses</span>/{id_appcompany}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Retrieve the specified glass and apps relationship</p></div><ul class="nav nav-tabs"><li class="active"><a href="#appglasses__id_appcompany__get_request" data-toggle="tab">Request</a></li><li><a href="#appglasses__id_appcompany__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="appglasses__id_appcompany__get_request"><h3>URI Parameters</h3><ul><li><strong>id_appcompany</strong>: <em>required (integer)</em><p>The uniquely number which indentifies the app - glass relationship</p></li></ul></div><div class="tab-pane" id="appglasses__id_appcompany__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "id": 4,
+  "glass": "111111",
+  "application": {
+    "id": 3,
+    "version": "1.1",
+    "name": "Streye valu2",
+    "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu2/1.1/app-debug_2016-05-02_12:05:42.apk",
+    "package": "com.example.pedro.yuvtobitmap"
+  },
+  "company": "1"
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 404,
+    "message": "Not Found"
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 500,
+    "message": "Internal Server Error"
+  }
+}
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="appglasses__id_appcompany__delete"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_delete">delete</span> <span class="parent">/appglasses</span>/{id_appcompany}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Delete the specified app - glass relationship</p></div><ul class="nav nav-tabs"><li class="active"><a href="#appglasses__id_appcompany__delete_request" data-toggle="tab">Request</a></li><li><a href="#appglasses__id_appcompany__delete_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="appglasses__id_appcompany__delete_request"><h3>URI Parameters</h3><ul><li><strong>id_appcompany</strong>: <em>required (integer)</em><p>The uniquely number which indentifies the app - glass relationship</p></li></ul></div><div class="tab-pane" id="appglasses__id_appcompany__delete_response"><h2>HTTP status code <a href="http://httpstatus.es/204" target="_blank">204</a></h2><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 500,
+    "message": "Internal Server Error"
+  }
+}
+</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="allglassapps" class="panel-title">AppVersions of a Glass</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_allglassapps__id_glass_"><span class="parent">/allglassapps</span>/{id_glass}</a> <span class="methods"><a href="#allglassapps__id_glass__get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_allglassapps__id_glass_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#allglassapps__id_glass__get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Retrieve all apps of the specified glass</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="allglassapps__id_glass__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/allglassapps</span>/{id_glass}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Retrieve all apps of the specified glass</p></div><ul class="nav nav-tabs"><li class="active"><a href="#allglassapps__id_glass__get_request" data-toggle="tab">Request</a></li><li><a href="#allglassapps__id_glass__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="allglassapps__id_glass__get_request"><h3>URI Parameters</h3><ul><li><strong>id_glass</strong>: <em>required (integer)</em><p>The uniquely number which indentifies the glass</p></li></ul></div><div class="tab-pane" id="allglassapps__id_glass__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>[
+  {
+    "id": 2,
+    "glass": "111111",
+    "application": {
+      "id": 1,
+      "version": "1.0",
+      "name": "Streye valu",
+      "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu/1.0/EBHS_2016-05-02_10:05:50.apk",
+      "package": "com.cks.EBHS"
+    },
+    "company": "1"
+  }
+]
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 404,
+    "message": "Not Found"
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 500,
+    "message": "Internal Server Error"
+  }
+}
+</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="glassupdates" class="panel-title">Glass updates</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_glassupdates__serial_number_"><span class="parent">/glassupdates</span>/{serial_number}</a> <span class="methods"><a href="#glassupdates__serial_number__get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_glassupdates__serial_number_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#glassupdates__serial_number__get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Retrieve all apps of the specified glass</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="glassupdates__serial_number__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/glassupdates</span>/{serial_number}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Retrieve all apps of the specified glass</p></div><ul class="nav nav-tabs"><li class="active"><a href="#glassupdates__serial_number__get_request" data-toggle="tab">Request</a></li><li><a href="#glassupdates__serial_number__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="glassupdates__serial_number__get_request"><h3>URI Parameters</h3><ul><li><strong>serial_number</strong>: <em>required (string)</em><p>The uniquely serial number which indentifies the glass</p></li></ul></div><div class="tab-pane" id="glassupdates__serial_number__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "buildInformation": [
+    {
+      "action": "INSTALL",
+      "build_id": 1,
+      "build_name": "Streye valu",
+      "build_url": "localhost/appdownloads/1",
+      "package_name": "com.cks.EBHS"
+    },
+    {
+      "action": "UNINSTALL",
+      "build_id": 3,
+      "build_name": "Streye valu2",
+      "build_url": "localhost/appdownloads/3",
+      "package_name": "com.example.pedro.yuvtobitmap"
+    },
+    {
+      "action": "UNINSTALL",
+      "build_id": 4,
+      "build_name": "Streye Luis",
+      "build_url": "localhost/appdownloads/4",
+      "package_name": "com.example.pedro.yuvtobitmap"
+    }
+  ]
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>[]
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "error": {
+    "code": 500,
+    "message": "Internal Server Error"
+  }
+}</code></pre></div></div></div></div></div></div></div></div></div></div></div><div class="col-md-3"><div id="sidebar" class="hidden-print affix" role="complementary"><ul class="nav nav-pills nav-stacked"><li><a href="#appversions">App Versions</a></li><li><a href="#appcompanies">Company - AppVersions Relationship</a></li><li><a href="#allcompanyapps">AppVersions of a Company</a></li><li><a href="#appglasses">Glass - AppVersions Relationship</a></li><li><a href="#allglassapps">AppVersions of a Glass</a></li><li><a href="#glassupdates">Glass updates</a></li></ul></div></div></div></div></body></html>

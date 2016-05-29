@@ -14,3 +14,11 @@ RUN usermod -u 1000 www-data
 CMD ["php5-fpm", "-F"]
 
 EXPOSE 9000
+
+RUN apt-get install -y sudo
+
+RUN echo "alias symfony='sudo -u www-data php /var/www/symfony/bin/console'" >> /root/.bashrc
+
+RUN chown -R 1000:www-data /var
+
+WORKDIR /var/www/symfony

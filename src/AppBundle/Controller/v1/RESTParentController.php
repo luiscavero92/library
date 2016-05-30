@@ -43,7 +43,7 @@ class RESTParentController extends FOSRestController
 			$items = $repository->findAll();
 		} catch (\Exception $e) {
 			$this->get('logger')->error($e->getMessage(), array("TRACE ERROR: ".__METHOD__));
-			throw new HttpException(500, $this->accessErrorMsg);
+			throw new HttpException(500, $this->getMySQLErrorMsg($e->getMessage()));
 		}
 		if(!$items){
         	throw new HttpException(404, $this->noListFoundMsg);
@@ -218,5 +218,34 @@ class RESTParentController extends FOSRestController
         }
 
         return 'AppBundle\Form\\' . $form;
+    }
+
+    protected function getMySQLErrorMsg($errorMsg)
+    {
+        $matchs = array();
+        $pattern = "/SQLSTATE\[\w+\]/";
+        preg_match($pattern, $errorMsg, $matchs);
+
+        $keys = ['/\[/', '/\]/', '/SQLSTATE/'];
+        $errorCode = preg_replace($keys, "", $matchs[0]);
+
+        switch ($errorCode) {
+            case '42000':
+                return 'Database is not accesible';
+                break;
+
+            case '42S02':
+                return 'Table not found';
+                break;
+
+            case '1040':
+                return 'This register has foreign keys, can not be deleted';
+                break;
+            
+            default:
+                return 'There was a problem with de database';
+                break;
+        }
+        
     }
 }

@@ -1,0 +1,10 @@
+{% spaceless %}
+    {
+    "error": "{{ status_text }}",
+    "error_description":{% if exception.getMessage matches '/^Expression \(.*\) denied access.$/' %}
+    "Unauthorized access!"
+{% else %}
+    "{{ exception.getMessage }}"
+{% endif %}
+    }
+{% endspaceless %}

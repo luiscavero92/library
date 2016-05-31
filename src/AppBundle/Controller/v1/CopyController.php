@@ -23,7 +23,15 @@ class CopyController extends RESTParentController
 
 	public function postCopyAction(Request $request)
 	{
-        return parent::post($request);   
+        $validItem = $this->validateWithForm(new $this->fullEntityName, $request);
+
+        if(!$validItem->getAddedOn()){
+            $validItem->setAddedOn(new \DateTime());
+        }
+        
+        $this->persistItem($validItem);
+
+        return $this->returnView($validItem, 201);  
 	}
 
     public function patchCopyAction(Request $request, $id)

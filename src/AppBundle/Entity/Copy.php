@@ -62,13 +62,10 @@ class Copy
     private $copyNumber;
 
     /**
-     * @var \Date
+     * @var \DateTime
      *
      * @ORM\Column(name="addedOn", type="date")
      *
-     * @Assert\NotBlank(
-     *      message="addedOn should not be a blank."
-     * )
      * @Assert\Date()
      * @JMS\Groups({"default"}) 
      */
@@ -169,7 +166,7 @@ class Copy
     /**
      * Set addedOn
      *
-     * @param \Date $addedOn
+     * @param \DateTime $addedOn
      *
      * @return Copy
      */
@@ -183,7 +180,7 @@ class Copy
     /**
      * Get addedOn
      *
-     * @return \Date
+     * @return \DateTime
      */
     public function getAddedOn()
     {

@@ -19,7 +19,7 @@ class CopyType extends AbstractType
         $builder
             ->add('article', EntityType::class, array('class' => 'AppBundle\Entity\Article', 'invalid_message' => 'Article ID is not valid'))
             ->add('copyNumber')
-            ->add('addedOn', DateType::class, array('widget' => 'single_text', 'invalid_message' => ' addedOn date format is invalid (YYYY-MM-DD)'))
+            ->add('addedOn', DateType::class, array('widget' => 'single_text', 'invalid_message' => ' addedOn date format is invalid (YYYY-MM-DD)', 'required' => false))
             ->add('note')
         ;
     }

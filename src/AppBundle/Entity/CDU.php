@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use JMS\Serializer\Annotation as JMS;
 /**
  * CDU
  *
@@ -18,6 +18,7 @@ class CDU
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Groups({"default"})
      */
     private $id;
 
@@ -25,6 +26,7 @@ class CDU
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=255, unique=true)
+     * @JMS\Groups({"default"}) 
      */
     private $code;
 
@@ -32,6 +34,7 @@ class CDU
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255, unique=true)
+     * @JMS\Groups({"default"})
      */
     private $description;
 

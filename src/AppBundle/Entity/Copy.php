@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Copy
@@ -19,12 +20,16 @@ class Copy
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @JMS\Groups({"default"}) 
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Article")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
+     *
+     * @JMS\Groups({"default"}) 
      */
     private $article;
 
@@ -32,6 +37,8 @@ class Copy
      * @var string
      *
      * @ORM\Column(name="copyNumber", type="string", length=255)
+     *
+     * @JMS\Groups({"default"})
      */
     private $copyNumber;
 
@@ -39,6 +46,8 @@ class Copy
      * @var \Date
      *
      * @ORM\Column(name="addedOn", type="date")
+     *
+     * @JMS\Groups({"default"}) 
      */
     private $addedOn;
 
@@ -46,6 +55,8 @@ class Copy
      * @var bool
      *
      * @ORM\Column(name="lost", type="boolean")
+     *
+     * @JMS\Groups({"default"}) 
      */
     private $lost = false;
 
@@ -53,6 +64,8 @@ class Copy
      * @var bool
      *
      * @ORM\Column(name="damaged", type="boolean")
+     *
+     * @JMS\Groups({"default"}) 
      */
     private $damaged = false;
 
@@ -60,6 +73,8 @@ class Copy
      * @var string
      *
      * @ORM\Column(name="note", type="string", length=255, nullable=true)
+     *
+     * @JMS\Groups({"default"}) 
      */
     private $note;
 
@@ -72,6 +87,8 @@ class Copy
      * @var bool
      *
      * @ORM\Column(name="available", type="boolean")
+     *
+     * @JMS\Groups({"default"}) 
      */
     private $available = true;
 

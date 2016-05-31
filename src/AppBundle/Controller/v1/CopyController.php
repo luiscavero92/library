@@ -17,9 +17,9 @@ class CopyController extends RESTParentController
 		return parent::getAll();
 	}
 
-	public function getCopyAction(Copy $copy = null)
+	public function getCopyAction($id)
 	{
-		return parent::getOne($copy);
+		return parent::getOne($id);
 	}
 
 	public function postCopyAction(Request $request)
@@ -27,14 +27,14 @@ class CopyController extends RESTParentController
         return parent::post($request);   
 	}
 
-    public function patchCopyAction(Request $request, Copy $copy = null)
+    public function patchCopyAction(Request $request, $id)
     {
-        return parent::patch($request, $copy);  
+        return parent::patch($request, $id);  
     }
 
-    public function deleteCopyAction(Copy $copy = null)
+    public function deleteCopyAction($id)
     {
-        return parent::delete($copy);
+        return parent::delete($id);
     }
 
 }

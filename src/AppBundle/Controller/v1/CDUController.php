@@ -17,9 +17,9 @@ class CDUController extends RESTParentController
 		return parent::getAll();
 	}
 
-	public function getCduAction(CDU $cdu = null)
+	public function getCduAction($id)
 	{
-		return parent::getOne($cdu);
+		return parent::getOne($id);
 	}
 
 }

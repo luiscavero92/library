@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\Constraints as AcmeAssert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Article
@@ -24,6 +25,8 @@ class Article
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @JMS\Groups({"default"})
      */
     private $id;
 
@@ -47,6 +50,8 @@ class Article
      *      minMessage = "RefNumber must be at least {{ limit }} characters long",
      *      maxMessage = "RefNumber cannot be longer than {{ limit }} characters"
      * )
+     *
+     * @JMS\Groups({"default"})
      */
     private $refNumber;
 
@@ -70,11 +75,14 @@ class Article
      *      minMessage = "ISBN must be at least {{ limit }} characters long",
      *      maxMessage = "ISBN cannot be longer than {{ limit }} characters"
      * )
+     *
+     * @JMS\Groups({"default"})
      */
     private $isbn;
 
     /**
      * @var string
+     *
      * @ORM\Column(name="title", type="string", length=255)
      *
      * @Assert\NotBlank(
@@ -92,11 +100,14 @@ class Article
      *      minMessage = "Title must be at least {{ limit }} characters long",
      *      maxMessage = "Title cannot be longer than {{ limit }} characters"
      * )
+     *
+     * @JMS\Groups({"default"}) 
      */
     private $title;
 
     /**
      * @var string
+     *
      * @ORM\Column(name="subtitle", type="string", length=255, nullable=true)
      *
      * @Assert\Type(
@@ -110,18 +121,23 @@ class Article
      *      minMessage = "Subtitle must be at least {{ limit }} characters long",
      *      maxMessage = "Subtitle cannot be longer than {{ limit }} characters"
      * )
+     *
+     * @JMS\Groups({"default"}) 
      */
     private $subtitle;
 
     /**
      * @var array
+     *
      * @ORM\Column(name="authors", type="array")
      *
+     * @JMS\Groups({"default"}) 
      */
     private $authors;
 
     /**
      * @var integer
+     *
      * @ORM\Column(name="editionYear", type="integer", length=4, nullable=true)
      *
      * @Assert\Type(
@@ -135,6 +151,8 @@ class Article
      *      minMessage = "EditionYear must be at least {{ limit }} characters long",
      *      maxMessage = "EditionYear cannot be longer than {{ limit }} characters"
      * )
+     *
+     * @JMS\Groups({"default"}) 
      */
     private $editionYear;
 
@@ -158,6 +176,8 @@ class Article
      *      minMessage = "Publisher must be at least {{ limit }} characters long",
      *      maxMessage = "Publisher cannot be longer than {{ limit }} characters"
      * )
+     *
+     * @JMS\Groups({"default"})
      */
     private $publisher;
 
@@ -176,6 +196,8 @@ class Article
      *      minMessage = "legalDeposit must be at least {{ limit }} characters long",
      *      maxMessage = "legalDeposit cannot be longer than {{ limit }} characters"
      * )
+     *
+     * @JMS\Groups({"default"}) 
      */
     private $legalDeposit;
 
@@ -186,6 +208,8 @@ class Article
      * @Assert\NotBlank(
      *      message="CDU should not be a blank."
      * )
+     *
+     * @JMS\Groups({"default"}) 
      */
     private $cdu;
 
@@ -218,6 +242,8 @@ class Article
      *      minMessage = "Location must be at least {{ limit }} characters long",
      *      maxMessage = "Location cannot be longer than {{ limit }} characters"
      * )
+     *
+     * @JMS\Groups({"default"}) 
      */
     private $location;
 
@@ -228,6 +254,8 @@ class Article
      * @Assert\NotBlank(
      *      message="category should not be a blank."
      * )
+     *
+     * @JMS\Groups({"default"}) 
      */
     private $category;
 
@@ -247,6 +275,8 @@ class Article
      *      minMessage = "Note must be at least {{ limit }} characters long",
      *      maxMessage = "Note cannot be longer than {{ limit }} characters"
      * )
+     *
+     * @JMS\Groups({"default"}) 
      */
     private $note;
 
@@ -259,6 +289,8 @@ class Article
      *      type="boolean",
      *      message="The value of Loanable ({{ value }}) is not a valid {{ type }}."
      * )
+     *
+     * @JMS\Groups({"default"}) 
      */
     private $loanable = true;
 

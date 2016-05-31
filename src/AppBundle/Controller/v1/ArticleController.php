@@ -17,9 +17,9 @@ class ArticleController extends RESTParentController
 		return parent::getAll();
 	}
 
-	public function getArticleAction(Article $article = null)
+	public function getArticleAction($id)
 	{
-		return parent::getOne($article);
+		return parent::getOne($id);
 	}
 
 	public function postArticlesAction(Request $request)
@@ -27,14 +27,14 @@ class ArticleController extends RESTParentController
         return parent::post($request);   
 	}
 
-    public function patchArticlesAction(Request $request, Article $article = null)
+    public function patchArticlesAction(Request $request, $id)
     {
-        return parent::patch($request, $article);  
+        return parent::patch($request, $id);  
     }
 
-    public function deleteArticlesAction(Article $article = null)
+    public function deleteArticlesAction($id)
     {
-        return parent::delete($article);
+        return parent::delete($id);
     }
 
 }

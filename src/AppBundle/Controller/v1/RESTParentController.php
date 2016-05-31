@@ -3,6 +3,7 @@ namespace AppBundle\Controller\v1;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\Request;
+use JMS\Serializer\SerializationContext;
 use FOS\RestBundle\Controller\FOSRestController;
 use AppBundle\Form\FormStrongValidator;
 
@@ -52,8 +53,10 @@ class RESTParentController extends FOSRestController
         return $this->returnView($items, 200);
 	}
 
-	public function getOne($item)
+	public function getOne($id)
 	{
+        $item = $this->getOneById($id);
+
         if(!$item){
             throw new HttpException(404, $this->noItemFoundMsg);
         }
@@ -61,14 +64,14 @@ class RESTParentController extends FOSRestController
         return $this->returnView($item, 200);
 	}
 
-    public function getAllWhere($item, $filters)
+    public function getAllWhere($filters)
     {
         try{
             $repository = $this->getEntityRep($this->entityName);
             $items = $repository->findBy($filters);
         } catch (\Exception $e) {
             $this->get('logger')->error($e->getMessage(), array("TRACE ERROR: ".__METHOD__));
-            throw new HttpException(500, $this->accessErrorMsg);
+            throw new HttpException(500, $this->getMySQLErrorMsg($e->getMessage()));
         }
 
         if(!$items){
@@ -88,8 +91,10 @@ class RESTParentController extends FOSRestController
         return $this->returnView($validItem, 201);   
 	}
 
-	public function patch(Request $request, $item)
+	public function patch(Request $request, $id)
 	{	
+        $item = $this->getOneById($id);
+        
         if(!$item){
             throw new HttpException(404, $this->noItemFoundMsg);
         }
@@ -102,8 +107,10 @@ class RESTParentController extends FOSRestController
 
 	}
 
-	public function delete($item)
+	public function delete($id)
 	{
+        $item = $this->getOneById($id);
+
         if(!$item){
             throw new HttpException(404, $this->noItemFoundMsg);
         }
@@ -117,7 +124,7 @@ class RESTParentController extends FOSRestController
             throw $e;
         } catch (\Exception $e) {
             $this->get('logger')->error($e->getMessage(), array("TRACE ERROR: ".__METHOD__));
-            throw new HttpException(500, $e->getCode());
+            throw new HttpException(500, $this->getMySQLErrorMsg($e->getMessage()));
         }
 
         return $this->returnView("", 204);
@@ -125,17 +132,16 @@ class RESTParentController extends FOSRestController
 
 
 //////////////////////////////////////////////////////////////////
-    protected function returnView($data, $code)
+    protected function returnView($data, $code, $serializerGroup = 'default')
     {
-
-        $view = $this->view($data, $code);
+        $view = $this->view($data, $code)->setSerializationContext(
+                SerializationContext::create()->setGroups($serializerGroup));
         return $this->handleView($view);
     }
 
 
     protected function validateWithForm($classInstance, $request, $patch = false)
     {
-
         if($patch){
             $form = $this->createForm($this->fullFormName, $classInstance, array('method' => 'PATCH'));
         }else {
@@ -166,9 +172,20 @@ class RESTParentController extends FOSRestController
         return $classInstance;
     }
 
+    protected function getOneById($id)
+    {
+        try{
+            $repository = $this->getEntityRep($this->entityName);
+            $item = $repository->findOneById($id);
+        } catch (\Exception $e) {
+            $this->get('logger')->error($e->getMessage(), array("TRACE ERROR: ".__METHOD__));
+            throw new HttpException(500, $this->getMySQLErrorMsg($e->getMessage()));
+        }
+        return $item;
+    }
+
     protected function persistItem($validItem)
     {
-
         try{
             $em = $this->getDoctrine()->getManager();
             $em->persist($validItem);
@@ -178,13 +195,12 @@ class RESTParentController extends FOSRestController
             throw $e;
         } catch (\Exception $e) {
             $this->get('logger')->error($e->getMessage(), array("TRACE ERROR: ".__METHOD__));
-            throw new HttpException(500, $this->insertErrorMsg);
+            throw new HttpException(500, $this->getMySQLErrorMsg($e->getMessage()));
         } 
     }
 
     protected function updateItem($validItem)
     {
-
         try{
             $em = $this->getDoctrine()->getManager();
             $em->flush();
@@ -193,13 +209,12 @@ class RESTParentController extends FOSRestController
             throw $e;
         } catch (\Exception $e) {
             $this->get('logger')->error($e->getMessage(), array("TRACE ERROR: ".__METHOD__));
-            throw new HttpException(500, $this->updateErrorMsg);
+            throw new HttpException(500, $this->getMySQLErrorMsg($e->getMessage()));
         } 
     }
 
     protected function getEntityRep($entity)
     {
-
         return $this->getDoctrine()->getRepository($this->getFullEntityName($entity));
     }
 
@@ -225,26 +240,27 @@ class RESTParentController extends FOSRestController
         $matchs = array();
         $pattern = "/SQLSTATE\[\w+\]/";
         preg_match($pattern, $errorMsg, $matchs);
+        var_dump($errorMsg);
 
         $keys = ['/\[/', '/\]/', '/SQLSTATE/'];
-        $errorCode = preg_replace($keys, "", $matchs[0]);
+        if($matchs){
+            $errorCode = preg_replace($keys, "", $matchs[0]);
+        }else{
+            $errorCode = -1;
+        }
 
         switch ($errorCode) {
+            case '23000':
+                return 'This register has foreign keys, can not be deleted';
+
             case '42000':
                 return 'Database is not accesible';
-                break;
 
             case '42S02':
                 return 'Table not found';
-                break;
-
-            case '1040':
-                return 'This register has foreign keys, can not be deleted';
-                break;
             
             default:
-                return 'There was a problem with de database';
-                break;
+                return $errorCode;
         }
         
     }

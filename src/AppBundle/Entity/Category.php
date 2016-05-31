@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Category
@@ -21,6 +22,7 @@ class Category
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Groups({"default"})
      */
     private $id;
 
@@ -44,6 +46,8 @@ class Category
      *      minMessage = "description must be at least {{ limit }} characters long",
      *      maxMessage = "description cannot be longer than {{ limit }} characters"
      * )
+     *
+     * @JMS\Groups({"default"})
      */
     private $description;
 

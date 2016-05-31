@@ -3,20 +3,20 @@ namespace AppBundle\Controller\v1;
 
 use Symfony\Component\HttpFoundation\Request;
 
-class CDUController extends RESTParentController
+class CategoryController extends RESTParentController
 {
 
     public function __construct()
     {
-        parent::__construct('CDUController', 'CDU', '');
+        parent::__construct('CategoryController', 'Category', '');
     }
 
-	public function getCdusAction()
+	public function getCategorysAction()
 	{
 		return parent::getAll();
 	}
 
-	public function getCduAction($id)
+	public function getCategoryAction($id)
 	{
 		return parent::getOne($id);
 	}

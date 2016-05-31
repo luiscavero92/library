@@ -6,9 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 
-class CopyType extends AbstractType
+class LoanType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -17,10 +16,8 @@ class CopyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('article', EntityType::class, array('class' => 'AppBundle\Entity\Article', 'invalid_message' => 'Article ID is not valid'))
-            ->add('copyNumber')
-            ->add('addedOn', DateType::class, array('widget' => 'single_text', 'invalid_message' => ' addedOn date format is invalid (YYYY-MM-DD)'))
-            ->add('note')
+            ->add('reader', EntityType::class, array('class' => 'AppBundle\Entity\Reader', 'invalid_message' => 'Reader ID is not valid'))
+            ->add('copy', EntityType::class, array('class' => 'AppBundle\Entity\Copy', 'invalid_message' => 'Copy ID is not valid'))
         ;
     }
     
@@ -31,12 +28,12 @@ class CopyType extends AbstractType
     {
         $resolver->setDefaults(array(
             'csrf_protection' => false,
-            'data_class' => 'AppBundle\Entity\Copy'
+            'data_class' => 'AppBundle\Entity\Loan'
         ));
     }
 
     public function getName()
     {
-        return('copy');
+        return('loan');
     }
 }

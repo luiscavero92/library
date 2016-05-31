@@ -18,16 +18,16 @@ class ArticleType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('subtitle')
+            ->add('subtitle', null, array('required' => false))
             ->add('refNumber')
-            ->add('editionYear')
+            ->add('editionYear', null, array('required' => false))
             ->add('isbn')
             ->add('publisher')
-            ->add('legalDeposit')
+            ->add('legalDeposit', null, array('required' => false))
             ->add('cdu', EntityType::class, array('class' => 'AppBundle\Entity\CDU', 'invalid_message' => 'CDU ID is not valid'))
-            ->add('location')
+            ->add('location', null, array('required' => false))
             ->add('category', EntityType::class, array('class' => 'AppBundle\Entity\Category', 'invalid_message' => 'Category ID is not valid'))
-            ->add('note')
+            ->add('note', null, array('required' => false))
             ->add('loanable')
             ->add('authors', CollectionType::class, array('allow_add' => true))
         ;

@@ -10,12 +10,6 @@ use AppBundle\Form\FormStrongValidator;
 class RESTParentController extends FOSRestController
 {
     //Error messages
-    protected $accessErrorMsg = "Data base access error.";
-
-    protected $insertErrorMsg = "Data base insert error.";
-    protected $updateErrorMsg = "Data base update error.";
-	protected $deleteErrorMsg = "Data base delete error.";
-
     protected $noListFoundMsg = "No list found";
     protected $noItemFoundMsg = "No item found";
 
@@ -174,7 +168,6 @@ class RESTParentController extends FOSRestController
 
     protected function getOneById($id)
     {
-        var_dump('hola');
         try{
             $repository = $this->getEntityRep($this->entityName);
             $item = $repository->findOneById($id);
@@ -183,7 +176,6 @@ class RESTParentController extends FOSRestController
             $this->get('logger')->error($e->getMessage(), array("TRACE ERROR: ".__METHOD__));
             throw new HttpException(500, $this->getMySQLErrorMsg($e->getMessage()));
         }
-        var_dump('adios');
         return $item;
     }
 
@@ -244,27 +236,42 @@ class RESTParentController extends FOSRestController
         $pattern = "/SQLSTATE\[\w+\]/";
         preg_match($pattern, $errorMsg, $matchs);
 
-        $keys = ['/\[/', '/\]/', '/SQLSTATE/'];
+        $waste = ['/\[/', '/\]/', '/SQLSTATE/'];
         if($matchs){
-            $errorCode = preg_replace($keys, "", $matchs[0]);
+            $errorCode = preg_replace($waste, "", $matchs[0]);
         }else{
             $errorCode = -1;
         }
 
+        $secondMatchs = array();
+        $secondPattern = "/:\s\d+/";
+        preg_match($secondPattern, $errorMsg, $secondMatchs);
+
+        $moreWaste = ['/:/', '/ /'];
+        if($secondMatchs){
+            $secondErrorCode = preg_replace($moreWaste, "", $secondMatchs[0]);
+        }else {
+            $secondErrorCode = -1;
+        }
 
         switch ($errorCode) {
             case '23000':
-                return 'This register has foreign keys, can not be deleted';
+                if($secondErrorCode == '1451'){
+                 return 'This register has foreign keys, can not be deleted';
+                }
+                if($secondErrorCode == '1048'){
+                 return 'Bad Internal Request, please contact with the administrator';
+                }
+                return $secondErrorCode;
 
             case '42000':
-                return 'Database is not accesible';
+                return 'Database is not accesible, please contact with the administrator';
 
             case '42S02':
-                return 'Table not found';
+                return 'Table not found, please contact with the administrator';
             
             default:
                 return $errorCode;
         }
-        
     }
 }

@@ -4,12 +4,17 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Reader
  *
  * @ORM\Table(name="Reader")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ReaderRepository")
+ * @UniqueEntity("recordNumber", message="This recordNumber is already in use.")
+ * @UniqueEntity("email", message="This email is already in use.")
  */
 class Reader
 {
@@ -19,6 +24,7 @@ class Reader
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Groups({"default"})
      */
     private $id;
 
@@ -26,6 +32,23 @@ class Reader
      * @var string
      *
      * @ORM\Column(name="recordNumber", type="string", length=255, unique=true)
+     * @Assert\NotBlank(
+     *      message="recordNumber should not be a blank."
+     * )
+     *
+     * @Assert\Type(
+     *      type="string",
+     *      message="The value of recordNumber ({{ value }}) is not a valid {{ type }}."
+     * )
+     *
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 255,
+     *      minMessage = "recordNumber must be at least {{ limit }} characters long",
+     *      maxMessage = "recordNumber cannot be longer than {{ limit }} characters"
+     * )
+     *
+     * @JMS\Groups({"default"})
      */
     private $recordNumber;
 
@@ -33,6 +56,23 @@ class Reader
      * @var string
      *
      * @ORM\Column(name="nif", type="string", length=9)
+     *
+     * @Assert\NotBlank(
+     *      message="nif should not be a blank."
+     * )
+     *
+     * @Assert\Type(
+     *      type="string",
+     *      message="The value of nif ({{ value }}) is not a valid {{ type }}."
+     * )
+     *
+     * @Assert\Length(
+     *      min = 9,
+     *      max = 9,
+     *      minMessage = "nif must be at least {{ limit }} characters long",
+     *      maxMessage = "nif cannot be longer than {{ limit }} characters"
+     * )
+     *
      */
     private $nif;
 
@@ -40,6 +80,23 @@ class Reader
      * @var string
      *
      * @ORM\Column(name="firstName", type="string", length=255)
+     * @Assert\NotBlank(
+     *      message="firstName should not be a blank."
+     * )
+     *
+     * @Assert\Type(
+     *      type="string",
+     *      message="The value of firstName ({{ value }}) is not a valid {{ type }}."
+     * )
+     *
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 255,
+     *      minMessage = "firstName must be at least {{ limit }} characters long",
+     *      maxMessage = "firstName cannot be longer than {{ limit }} characters"
+     * )
+     *
+     * @JMS\Groups({"default"})
      */
     private $firstName;
 
@@ -47,6 +104,23 @@ class Reader
      * @var string
      *
      * @ORM\Column(name="lastName", type="string", length=255)
+     * @Assert\NotBlank(
+     *      message="lastName should not be a blank."
+     * )
+     *
+     * @Assert\Type(
+     *      type="string",
+     *      message="The value of lastName ({{ value }}) is not a valid {{ type }}."
+     * )
+     *
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 255,
+     *      minMessage = "lastName must be at least {{ limit }} characters long",
+     *      maxMessage = "lastName cannot be longer than {{ limit }} characters"
+     * )
+     *
+     * @JMS\Groups({"default"})
      */
     private $lastName;
 
@@ -54,6 +128,20 @@ class Reader
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=true, unique=true)
+     * @Assert\NotBlank(
+     *      message="email should not be a blank."
+     * )
+     *
+     * @Assert\Email()
+     *
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 255,
+     *      minMessage = "email must be at least {{ limit }} characters long",
+     *      maxMessage = "email cannot be longer than {{ limit }} characters"
+     * )
+     *
+     * @JMS\Groups({"default"})
      */
     private $email;
 
@@ -61,6 +149,22 @@ class Reader
      * @var string
      *
      * @ORM\Column(name="phone", type="string", length=255)
+     * @Assert\NotBlank(
+     *      message="phone should not be a blank."
+     * )
+     *
+     * @Assert\Type(
+     *      type="string",
+     *      message="The value of phone ({{ value }}) is not a valid {{ type }}."
+     * )
+     *
+     * @Assert\Length(
+     *      min = 9,
+     *      max = 15,
+     *      minMessage = "phone must be at least {{ limit }} characters long",
+     *      maxMessage = "phone cannot be longer than {{ limit }} characters"
+     * )
+     *
      */
     private $phone;
 

@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Loan
@@ -18,18 +20,27 @@ class Loan
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Groups({"default"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Reader", inversedBy="loans")
      * @ORM\JoinColumn(name="reader_id", referencedColumnName="id")
+     * @Assert\NotBlank(
+     *      message="reader should not be a blank."
+     * )
+     * @JMS\Groups({"default"}) 
      */
     private $reader;
 
     /**
      * @ORM\ManyToOne(targetEntity="Copy", inversedBy="loans")
      * @ORM\JoinColumn(name="copy_id", referencedColumnName="id")
+     * @Assert\NotBlank(
+     *      message="copy should not be a blank."
+     * )
+     * @JMS\Groups({"default"}) 
      */
     private $copy;
 
@@ -37,6 +48,7 @@ class Loan
      * @var \DateTime
      *
      * @ORM\Column(name="loanDate", type="date")
+     * @JMS\Groups({"default"}) 
      */
     private $loanDate;
 
@@ -44,6 +56,7 @@ class Loan
      * @var \DateTime
      *
      * @ORM\Column(name="returnDate", type="date", nullable=true)
+     * @JMS\Groups({"default"}) 
      */
     private $returnDate = null;
 

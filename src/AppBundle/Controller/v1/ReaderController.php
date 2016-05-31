@@ -3,35 +3,35 @@ namespace AppBundle\Controller\v1;
 
 use Symfony\Component\HttpFoundation\Request;
 
-class ArticleController extends RESTParentController
+class ReaderController extends RESTParentController
 {
 
     public function __construct()
     {
-        parent::__construct('ArticleController', 'Article', 'ArticleType');
+        parent::__construct('ReaderController', 'Reader', 'ReaderType');
     }
 
-	public function getArticlesAction()
+	public function getReadersAction()
 	{
 		return parent::getAll();
 	}
 
-	public function getArticleAction($id)
+	public function getReaderAction($id)
 	{
 		return parent::getOne($id);
 	}
 
-	public function postArticlesAction(Request $request)
+	public function postReadersAction(Request $request)
 	{
         return parent::post($request);   
 	}
 
-    public function patchArticlesAction(Request $request, $id)
+    public function patchReadersAction(Request $request, $id)
     {
         return parent::patch($request, $id);  
     }
 
-    public function deleteArticlesAction($id)
+    public function deleteReadersAction($id)
     {
         return parent::delete($id);
     }

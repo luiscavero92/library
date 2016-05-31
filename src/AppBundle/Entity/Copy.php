@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -29,6 +30,9 @@ class Copy
      * @ORM\ManyToOne(targetEntity="Article")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
      *
+     * @Assert\NotBlank(
+     *      message="article should not be a blank."
+     * )
      * @JMS\Groups({"default"}) 
      */
     private $article;
@@ -38,6 +42,21 @@ class Copy
      *
      * @ORM\Column(name="copyNumber", type="string", length=255)
      *
+     * @Assert\NotBlank(
+     *      message="copyNumber should not be a blank."
+     * )
+     *
+     * @Assert\Type(
+     *      type="string",
+     *      message="The value of copyNumber ({{ value }}) is not a valid {{ type }}."
+     * )
+     *
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 255,
+     *      minMessage = "copyNumber must be at least {{ limit }} characters long",
+     *      maxMessage = "copyNumber cannot be longer than {{ limit }} characters"
+     * )
      * @JMS\Groups({"default"})
      */
     private $copyNumber;
@@ -47,6 +66,10 @@ class Copy
      *
      * @ORM\Column(name="addedOn", type="date")
      *
+     * @Assert\NotBlank(
+     *      message="addedOn should not be a blank."
+     * )
+     * @Assert\Date()
      * @JMS\Groups({"default"}) 
      */
     private $addedOn;
@@ -74,7 +97,19 @@ class Copy
      *
      * @ORM\Column(name="note", type="string", length=255, nullable=true)
      *
-     * @JMS\Groups({"default"}) 
+     * @JMS\Groups({"default"})
+     * 
+     * @Assert\Type(
+     *      type="string",
+     *      message="The value of Location ({{ value }}) is not a valid {{ type }}."
+     * )
+     *
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 255,
+     *      minMessage = "Location must be at least {{ limit }} characters long",
+     *      maxMessage = "Location cannot be longer than {{ limit }} characters"
+     * )
      */
     private $note;
 

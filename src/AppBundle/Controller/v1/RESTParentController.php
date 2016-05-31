@@ -94,7 +94,7 @@ class RESTParentController extends FOSRestController
 	public function patch(Request $request, $id)
 	{	
         $item = $this->getOneById($id);
-        
+
         if(!$item){
             throw new HttpException(404, $this->noItemFoundMsg);
         }
@@ -174,13 +174,16 @@ class RESTParentController extends FOSRestController
 
     protected function getOneById($id)
     {
+        var_dump('hola');
         try{
             $repository = $this->getEntityRep($this->entityName);
             $item = $repository->findOneById($id);
         } catch (\Exception $e) {
+
             $this->get('logger')->error($e->getMessage(), array("TRACE ERROR: ".__METHOD__));
             throw new HttpException(500, $this->getMySQLErrorMsg($e->getMessage()));
         }
+        var_dump('adios');
         return $item;
     }
 
@@ -240,7 +243,6 @@ class RESTParentController extends FOSRestController
         $matchs = array();
         $pattern = "/SQLSTATE\[\w+\]/";
         preg_match($pattern, $errorMsg, $matchs);
-        var_dump($errorMsg);
 
         $keys = ['/\[/', '/\]/', '/SQLSTATE/'];
         if($matchs){
@@ -248,6 +250,7 @@ class RESTParentController extends FOSRestController
         }else{
             $errorCode = -1;
         }
+
 
         switch ($errorCode) {
             case '23000':

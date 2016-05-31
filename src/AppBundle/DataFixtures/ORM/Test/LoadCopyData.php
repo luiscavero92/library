@@ -19,7 +19,7 @@ class LoadCopyData extends AbstractFixture implements OrderedFixtureInterface
             $copy = new Copy();
             $copy->setArticle($randArticle);
             $copy->setCopyNumber('COPYNUMBER'.$i);
-            $copy->setAddedOn(date_create(date("Y-m-d")));
+            $copy->setAddedOn(new \DateTime());
 
             $manager->persist($copy);
         }

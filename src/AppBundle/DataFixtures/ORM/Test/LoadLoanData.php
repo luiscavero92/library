@@ -31,7 +31,7 @@ class LoadLoanData extends AbstractFixture implements OrderedFixtureInterface
             $loan = new Loan();
             $loan->setCopy($copy);
             $loan->setReader($randReader);
-            $loan->setLoanDate(date_create(date("Y-m-d")));
+            $loan->setLoanDate(new \DateTime());
 
             $manager->persist($loan);
         }       

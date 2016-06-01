@@ -93,7 +93,7 @@ class RESTParentController extends FOSRestController
             throw new HttpException(404, $this->noItemFoundMsg);
         }
 
-    	$validItem = $this->validateWithForm(new $this->fullEntityName, $request, true);
+    	$validItem = $this->validateWithForm($item, $request, true);
 
         $this->updateItem($validItem);
 

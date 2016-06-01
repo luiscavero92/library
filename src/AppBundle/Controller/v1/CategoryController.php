@@ -11,7 +11,7 @@ class CategoryController extends RESTParentController
         parent::__construct('CategoryController', 'Category', '');
     }
 
-	public function getCategorysAction()
+	public function getCategoriesAction()
 	{
 		return parent::getAll();
 	}

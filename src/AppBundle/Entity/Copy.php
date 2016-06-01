@@ -76,6 +76,10 @@ class Copy
      *
      * @ORM\Column(name="lost", type="boolean")
      *
+     * @Assert\Type(
+     *      type="boolean",
+     *      message="The value of lost ({{ value }}) is not a valid {{ type }}."
+     * )
      * @JMS\Groups({"default"}) 
      */
     private $lost = false;
@@ -85,6 +89,10 @@ class Copy
      *
      * @ORM\Column(name="damaged", type="boolean")
      *
+     * @Assert\Type(
+     *      type="bool",
+     *      message="The value of damaged ({{ value }}) is not a valid {{ type }}."
+     * )
      * @JMS\Groups({"default"}) 
      */
     private $damaged = false;
@@ -120,6 +128,10 @@ class Copy
      *
      * @ORM\Column(name="available", type="boolean")
      *
+     * @Assert\Type(
+     *      type="boolean",
+     *      message="The value of available ({{ value }}) is not a valid {{ type }}."
+     * )
      * @JMS\Groups({"default"}) 
      */
     private $available = true;

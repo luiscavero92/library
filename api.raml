@@ -1,12 +1,12 @@
 #%RAML 0.8
-title: Glass - App
+title: Library
 version: v1
-baseUri: http://localhost:8000
+baseUri: http://localhost:9000
 
-/appversions:
-  displayName: App Versions
+/articles:
+  displayName: Articles
   get:
-    description: Retrieve a list of apps's versions
+    description: Retrieve the list of articles
     responses:
       200:
         body:
@@ -15,23 +15,36 @@ baseUri: http://localhost:8000
               {
               "$schema": "http://json-schema.org/draft-03/schema",
               "type": "array",
-              "description": "The app list"
+              "description": "The articles list"
               }
             example: |
               [
                 {
-                  "id": 1,
-                  "version": "1.0",
-                  "name": "Streye valu",
-                  "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu/1.0/EBHS_2016-05-02_10:05:50.apk",
-                  "package": "com.cks.EBHS"
-                },
-                {
-                  "id": 2,
-                  "version": "1.1",
-                  "name": "Streye valu",
-                  "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu/1.1/app-debug_2016-05-02_10:05:01.apk",
-                  "package": "com.example.pedro.yuvtobitmap"
+                  "id": 11,
+                  "ref_number": "343434340",
+                  "isbn": "65656565656-0",
+                  "title": "Alfagann es Flanagan",
+                  "subtitle": "el detective",
+                  "authors": [
+                    "Miguel de Cervantes",
+                    "Galileo Galilei",
+                    "Luilli"
+                  ],
+                  "edition_year": 1990,
+                  "publisher": "Circulo de lectores",
+                  "legal_deposit": "Depósito legal: 0",
+                  "cdu": {
+                    "id": 1288,
+                    "code": "82(09)",
+                    "description": "Crítica literaria. Historia de la literatura\n"
+                  },
+                  "location": "Estanteria juvenil",
+                  "category": {
+                    "id": 9,
+                    "description": "VHS"
+                  },
+                  "note": "The best note",
+                  "loanable": true
                 }
               ]
       404:
@@ -41,7 +54,7 @@ baseUri: http://localhost:8000
                 {
                   "error": {
                     "code": 404,
-                    "message": "Not Found"
+                    "message": "No list found"
                   }
                 }
 
@@ -58,39 +71,88 @@ baseUri: http://localhost:8000
 
 
   post:
-    description: Create a new app's version
+    description: Create a new article
     body:
-      multipart/form-data:
-        formParameters:
-          file:
-            description: The file to be uploaded
-            required: true
-            type: file
-          app_version[name]:
-            description: The application name (this field requires the form name)
-            required: true
-            type: string
-
+      application/json:
+        schema: |
+          {
+            "$schema": "http://json-schema.org/draft-03/schema",
+            "type": "object",
+            "description": "A new article",
+            "properties":
+              {
+                "title": {"type": "string"},
+                "subtitle":{"type": "string", "required": "false"},
+                "refNumber": {"type": "string"},
+                "editionYear": {"type": "string", "required": false},
+                "isbn": {"type": "string"},
+                "publisher": {"type": "string"},
+                "legalDeposit": {"type": "string", "required": false},
+                "cdu": {"type": "integer"},
+                "location": {"type": "string"},
+                "category": {"type": "integer"},
+                "note": {"type": "string", "required": false},
+                "loanable": {"type": "boolean", "required": false},
+                "authors": {"type": "array"}
+              }
+          }
+        example: |
+          {
+            "article":
+              {
+                "title": "Mil leguas de viaje submarino",
+                "subtitle": "Una historia real",
+                "refNumber": "111222333",
+                "editionYear": "1850",
+                "isbn": "349A-BC23232",
+                "publisher": "Círculo de lectores",
+                "legalDeposit": "NA.342-2005",
+                "cdu": 800,
+                "location": "A-7",
+                "category": 6,
+                "note": "Un libro muy recomendado para jóvenes",
+                "loanable": true,
+                "authors": ["Julio Verne"]
+              }
+          }
     responses:
       201:
         body:
           application/json:
             example: |
               {
-                "id": 1,
-                "version": "1.0",
-                "name": "Streye Team",
-                "internal_url": "/var/app/app/../var/uploads/app_files/Streye_Team/1.0/EBHS_2016-05-02_13:05:23.apk",
-                "package": "com.cks.EBHS"
+                "id": 21,
+                "ref_number": "111222333",
+                "isbn": "349A-BC23232",
+                "title": "Mil leguas de viaje submarino",
+                "subtitle": "Una historia real",
+                "authors": [
+                  "Julio Verne"
+                ],
+                "edition_year": 1850,
+                "publisher": "Círculo de lectores",
+                "legal_deposit": "NA.342-2005",
+                "cdu": {
+                  "id": 800,
+                  "code": "007",
+                  "description": "Teoría de la comunicación y del control en general. Cibernética\n"
+                },
+                "location": "A-7",
+                "category": {
+                  "id": 6,
+                  "description": "BOOK"
+                },
+                "note": "Un libro muy recomendado para jóvenes",
+                "loanable": true
               }
-      404:
+      400:
           body:
             application/json:
               example: |
                 {
                   "error": {
                     "code": 404,
-                    "message": "Not Found"
+                    "message": "Bad Request"
                   }
                 }
 
@@ -108,21 +170,39 @@ baseUri: http://localhost:8000
   /{id}:
     uriParameters:
       id:
-        description: The uniquely number which indentifies this app's version
+        description: The uniquely number which indentifies the article
         type: integer
     get:
-      description: Retrieve the specified app's version
+      description: Retrieve the specified article
       responses:
         200:
           body:
             application/json:
               example: |
                 {
-                  "id": 1,
-                  "version": "1.0",
-                  "name": "Streye Team",
-                  "internal_url": "/var/app/app/../var/uploads/app_files/Streye_Team/1.0/EBHS_2016-05-02_13:05:23.apk",
-                  "package": "com.cks.EBHS"
+                  "id": 21,
+                  "ref_number": "111222333",
+                  "isbn": "349A-BC23232",
+                  "title": "Mil leguas de viaje submarino",
+                  "subtitle": "Una historia real",
+                  "authors": [
+                    "Julio Verne"
+                  ],
+                  "edition_year": 1850,
+                  "publisher": "Círculo de lectores",
+                  "legal_deposit": "NA.342-2005",
+                  "cdu": {
+                    "id": 800,
+                    "code": "007",
+                    "description": "Teoría de la comunicación y del control en general. Cibernética\n"
+                  },
+                  "location": "A-7",
+                  "category": {
+                    "id": 6,
+                    "description": "BOOK"
+                  },
+                  "note": "Un libro muy recomendado para jóvenes",
+                  "loanable": true
                 }
         404:
           body:
@@ -131,7 +211,7 @@ baseUri: http://localhost:8000
                 {
                   "error": {
                     "code": 404,
-                    "message": "Not Found"
+                    "message": "No item found"
                   }
                 }
 
@@ -147,7 +227,7 @@ baseUri: http://localhost:8000
                 }
 
     delete:
-      description: Delete the specified app's version
+      description: Delete the specified article
       responses:
         204:
 
@@ -158,7 +238,7 @@ baseUri: http://localhost:8000
                 {
                   "error": {
                     "code": 404,
-                    "message": "Not Found"
+                    "message": "No item found"
                   }
                 }
 
@@ -174,32 +254,72 @@ baseUri: http://localhost:8000
                 }
                 
     patch:
-      description: Update the specified app's version
+      description: Update the specified article
       body:
         application/json:
           schema: |
-            "$schema": "http://json-schema.org/draft-03/schema",
-            "type": "object",
-            "description": "A new app's version",
-            "properties":
-              {
-                "name": {
-                  "type": "string",
-                  "required": false
+            {
+              "$schema": "http://json-schema.org/draft-03/schema",
+              "type": "object",
+              "description": "Changes in the article",
+              "properties":
+                {
+                  "title": {"type": "string"},
+                  "subtitle":{"type": "string", "required": false},
+                  "refNumber": {"type": "string"},
+                  "editionYear": {"type": "string", "required": false},
+                  "isbn": {"type": "string"},
+                  "publisher": {"type": "string"},
+                  "legalDeposit": {"type": "string", "required": false},
+                  "cdu": {"type": "integer"},
+                  "location": {"type": "string"},
+                  "category": {"type": "integer"},
+                  "note": {"type": "string", "required": false},
+                  "loanable": {"type": "boolean", "required": false},
+                  "authors": {"type": "array"}
                 }
-              }
             }
           example: |
             {
-            "app_version":
-              {
-              "name": "Streye Luis"
-              }
+              "article":
+                {
+                  "title": "Mil leguas de viaje en submarino",
+                  "subtitle": "Una historia casi real",
+                  "editionYear": "1853",
+                  "publisher": "Círculo de lectores",
+                  "legalDeposit": "NA.342-2005",
+                  "cdu": 820,
+                  "location": "A-76",
+                  "category": 7,
+                  "note": "Un libro muy altamente recomendado para jóvenes",
+                  "loanable": false
+                }
             }
           
       responses:
-        204:
-          
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "title": "Mil leguas de viaje en submarino",
+                  "subtitle": "Una historia casi real",
+                  "edition_year": 1853,
+                  "publisher": "Círculo de lectores",
+                  "legal_deposit": "NA.342-2005",
+                  "cdu": {
+                    "id": 820,
+                    "code": "122/129",
+                    "description": "Metafísica especial\n"
+                  },
+                  "location": "A-76",
+                  "category": {
+                    "id": 7,
+                    "description": "CD"
+                  },
+                  "note": "Un libro muy altamente recomendado para jóvenes",
+                  "loanable": false
+                }
         400:
           body:
             application/json:
@@ -218,7 +338,7 @@ baseUri: http://localhost:8000
                 {
                   "error": {
                     "code": 404,
-                    "message": "Not Found"
+                    "message": "No item found"
                   }
                 }
 
@@ -233,39 +353,93 @@ baseUri: http://localhost:8000
                     }
                   }
 
-/appcompanies:
-  displayName: Company - AppVersions Relationship
+/copies:
+  displayName: Copies
   get:
-    description: Retrieve the list of companies and apps relationship
+    description: Retrieve the list of copies
     responses:
       200:
-          body:
-            application/json:
-              example: |
-                [
-                  {
-                    "id": 7,
-                    "company": 1,
-                    "application": {
-                      "id": 1,
-                      "version": "1.1",
-                      "name": "Streye Team",
-                      "internal_url": "/var/app/app/../var/uploads/app_files/Streye_Team/1.1/app-debug_2016-05-02_12:05:55.apk",
-                      "package": "com.example.pedro.yuvtobitmap"
-                    }
+        body:
+          application/json:
+            schema: |
+              {
+              "$schema": "http://json-schema.org/draft-03/schema",
+              "type": "array",
+              "description": "The copies list"
+              }
+            example: |
+              [
+                {
+                  "id": 38,
+                  "article": {
+                    "id": 15,
+                    "ref_number": "343434344",
+                    "isbn": "65656565656-4",
+                    "title": "Alfagann es Flanagan",
+                    "subtitle": "el detective",
+                    "authors": [
+                      "Miguel de Cervantes",
+                      "Galileo Galilei",
+                      "Luilli"
+                    ],
+                    "edition_year": 1990,
+                    "publisher": "Circulo de lectores",
+                    "legal_deposit": "Depósito legal: 4",
+                    "cdu": {
+                      "id": 1002,
+                      "code": "54",
+                      "description": "Química\n"
+                    },
+                    "location": "Estanteria juvenil",
+                    "category": {
+                      "id": 6,
+                      "description": "BOOK"
+                    },
+                    "note": "The best note",
+                    "loanable": true
                   },
-                  {
-                    "id": 8,
-                    "company": 1,
-                    "application": {
-                      "id": 1,
-                      "version": "1.0",
-                      "name": "Streye valu",
-                      "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu/1.0/EBHS_2016-05-02_10:05:50.apk",
-                      "package": "com.cks.EBHS"
-                    }
-                  }
-                ]
+                  "copy_number": "COPYNUMBER0",
+                  "added_on": "2016-05-31T00:00:00+0000",
+                  "lost": false,
+                  "damaged": false,
+                  "available": true
+                },
+                {
+                  "id": 39,
+                  "article": {
+                    "id": 11,
+                    "ref_number": "343434340",
+                    "isbn": "65656565656-0",
+                    "title": "Alfagann es Flanagan",
+                    "subtitle": "el detective",
+                    "authors": [
+                      "Miguel de Cervantes",
+                      "Galileo Galilei",
+                      "Luilli"
+                    ],
+                    "edition_year": 1990,
+                    "publisher": "Circulo de lectores",
+                    "legal_deposit": "Depósito legal: 0",
+                    "cdu": {
+                      "id": 1288,
+                      "code": "82(09)",
+                      "description": "Crítica literaria. Historia de la literatura\n"
+                    },
+                    "location": "Estanteria juvenil",
+                    "category": {
+                      "id": 9,
+                      "description": "VHS"
+                    },
+                    "note": "The best note",
+                    "loanable": true
+                  },
+                  "copy_number": "COPYNUMBER1",
+                  "added_on": "2016-05-31T00:00:00+0000",
+                  "lost": false,
+                  "damaged": false,
+                  "available": true
+                }
+              ]
       404:
           body:
             application/json:
@@ -273,7 +447,7 @@ baseUri: http://localhost:8000
                 {
                   "error": {
                     "code": 404,
-                    "message": "Not Found"
+                    "message": "No list found"
                   }
                 }
 
@@ -290,63 +464,82 @@ baseUri: http://localhost:8000
 
 
   post:
-    description: Create a new companies and apps relationship
+    description: Create a new copy
     body:
       application/json:
         schema: |
           {
-          "$schema": "http://json-schema.org/draft-03/schema",
-          "type": "object",
-          "description": "A new glass",
-          "properties":
-            {
-              "company": {"type": "integer"},
-              "application":{"type": "integer"}
-            }
+            "$schema": "http://json-schema.org/draft-03/schema",
+            "type": "object",
+            "description": "A new copy",
+            "properties":
+              {
+                "article": {"type": "integer"},
+                "copyNumber":{"type": "string"},
+                "addedOn": {"type": "date", "required": false},
+                "note": {"type": "string", "required": false}
+              }
           }
         example: |
           {
-            "app_company":
+            "copy":
               {
-              "company": 1,
-              "application": 3
+                "article": 12,
+                "copyNumber":"120032A",
+                "addedOn": "2000-10-01",
+                "note": "The copy is a bit damaged",
+                "damaged": true
               }
           }
     responses:
       201:
         body:
           application/json:
-           example: |
-                {
-                  "id": 9,
-                  "company": 1,
-                  "application": {
-                    "id": 3,
-                    "version": "1.1",
-                    "name": "Streye valu2",
-                    "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu2/1.1/app-debug_2016-05-02_12:05:42.apk",
-                    "package": "com.example.pedro.yuvtobitmap"
-                  }
-                }
-
+            example: |
+              {
+                "id": 76,
+                "article": {
+                  "id": 12,
+                  "ref_number": "343434341",
+                  "isbn": "65656565656-1",
+                  "title": "Alfagann es Flanagan",
+                  "subtitle": "el detective",
+                  "authors": [
+                    "Miguel de Cervantes",
+                    "Galileo Galilei",
+                    "Luilli"
+                  ],
+                  "edition_year": 1990,
+                  "publisher": "Circulo de lectores",
+                  "legal_deposit": "Depósito legal: 1",
+                  "cdu": {
+                    "id": 875,
+                    "code": "330",
+                    "description": "Ciencia económica. Economía política. Doctrinas económicas\n"
+                  },
+                  "location": "Estanteria juvenil",
+                  "category": {
+                    "id": 10,
+                    "description": "OTHER"
+                  },
+                  "note": "The best note",
+                  "loanable": true
+                },
+                "copy_number": "120032A",
+                "added_on": "2000-10-01T00:00:00+0000",
+                "lost": false,
+                "damaged": true,
+                "note": "The copy is a bit damaged",
+                "available": false
+              }
       400:
           body:
             application/json:
               example: |
                 {
                   "error": {
-                    "code": 400,
-                    "message": "Bad Request"
-                  }
-                }
-      404:
-          body:
-            application/json:
-              example: |
-                {
-                  "error": {
                     "code": 404,
-                    "message": "Not Found"
+                    "message": "Bad Request"
                   }
                 }
 
@@ -361,56 +554,64 @@ baseUri: http://localhost:8000
                   }
                 }
 
-  /{id_appcompany}:
+  /{id}:
     uriParameters:
-        id_appcompany:
-          description: The uniquely number which indentifies the app - company relationship
-          type: integer
-
+      id:
+        description: The uniquely number which indentifies the copy
+        type: integer
     get:
-      description: Retrieve the specified company and apps relationship
+      description: Retrieve the specified copy
       responses:
         200:
           body:
             application/json:
-             example: |
+              example: |
                 {
-                  "id": 7,
-                  "company": 1,
-                  "application": {
-                    "id": 4,
-                    "version": "1.1",
-                    "name": "Streye Luis",
-                    "internal_url": "/var/app/app/../var/uploads/app_files/Streye_jajaja/1.1/app-debug_2016-05-02_12:05:55.apk",
-                    "package": "com.example.pedro.yuvtobitmap"
-                  }
+                  "id": 76,
+                  "article": {
+                    "id": 12,
+                    "ref_number": "343434341",
+                    "isbn": "65656565656-1",
+                    "title": "Alfagann es Flanagan",
+                    "subtitle": "el detective",
+                    "authors": [
+                      "Miguel de Cervantes",
+                      "Galileo Galilei",
+                      "Luilli"
+                    ],
+                    "edition_year": 1990,
+                    "publisher": "Circulo de lectores",
+                    "legal_deposit": "Depósito legal: 1",
+                    "cdu": {
+                      "id": 875,
+                      "code": "330",
+                      "description": "Ciencia económica. Economía política. Doctrinas económicas\n"
+                    },
+                    "location": "Estanteria juvenil",
+                    "category": {
+                      "id": 10,
+                      "description": "OTHER"
+                    },
+                    "note": "The best note",
+                    "loanable": true
+                  },
+                  "copy_number": "120032A",
+                  "added_on": "2000-10-01T00:00:00+0000",
+                  "lost": false,
+                  "damaged": true,
+                  "note": "The copy is a bit damaged",
+                  "available": false
                 }
         404:
-            body:
-              application/json:
-                example: |
-                  {
-                    "error": {
-                      "code": 404,
-                      "message": "Not Found"
-                    }
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No item found"
                   }
-
-        500:
-            body:
-              application/json:
-                example: |
-                  {
-                    "error": {
-                      "code": 500,
-                      "message": "Internal Server Error"
-                    }
-                  }
-
-    delete:
-      description: Delete the specified app - company relationship
-      responses:
-        204:
+                }
 
         500:
           body:
@@ -423,55 +624,117 @@ baseUri: http://localhost:8000
                   }
                 }
 
-/allcompanyapps:
-  displayName: AppVersions of a Company
-  /{id_company}:
-    uriParameters:
-      id_company:
-        description: The uniquely number which indentifies the company
-        type: integer
+    delete:
+      description: Delete the specified article
+      responses:
+        204:
 
-    get:
-      description: Retrieve all apps of the specified company
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No item found"
+                  }
+                }
+
+        500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+                
+    patch:
+      description: Update the specified copy
+      body:
+        application/json:
+          schema: |
+            {
+              "$schema": "http://json-schema.org/draft-03/schema",
+              "type": "object",
+              "description": "Changes in the copy",
+              "properties":
+                {
+                  "article": {"type": "integer"},
+                  "copyNumber":{"type": "string"},
+                  "addedOn": {"type": "date", "required": false},
+                  "note": {"type": "string", "required": false}
+                }
+            }
+          example: |
+            {
+              "copy":
+              {
+                "article": 15,
+                "damaged": false
+              }
+            }
+          
       responses:
         200:
           body:
             application/json:
-             example: |
-                [
-                  {
-                    "id": 8,
-                    "company": 1,
-                    "application": {
-                      "id": 1,
-                      "version": "1.0",
-                      "name": "Streye valu",
-                      "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu/1.0/EBHS_2016-05-02_10:05:50.apk",
-                      "package": "com.cks.EBHS"
-                    }
+              example: |
+                {
+                  "article": {
+                    "id": 15,
+                    "ref_number": "343434344",
+                    "isbn": "65656565656-4",
+                    "title": "Alfagann es Flanagan",
+                    "subtitle": "el detective",
+                    "authors": [
+                      "Miguel de Cervantes",
+                      "Galileo Galilei",
+                      "Luilli"
+                    ],
+                    "edition_year": 1990,
+                    "publisher": "Circulo de lectores",
+                    "legal_deposit": "Depósito legal: 4",
+                    "cdu": {
+                      "id": 1002,
+                      "code": "54",
+                      "description": "Química\n"
+                    },
+                    "location": "Estanteria juvenil",
+                    "category": {
+                      "id": 6,
+                      "description": "BOOK"
+                    },
+                    "note": "The best note",
+                    "loanable": true
                   },
-                  {
-                    "id": 9,
-                    "company": 1,
-                    "application": {
-                      "id": 3,
-                      "version": "1.1",
-                      "name": "Streye valu2",
-                      "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu2/1.1/app-debug_2016-05-02_12:05:42.apk",
-                      "package": "com.example.pedro.yuvtobitmap"
-                    }
+                  "lost": false,
+                  "damaged": false,
+                  "available": true
+                }
+        400:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 400,
+                    "message": "Bad Request"
                   }
-                ]
+                }
+
         404:
-            body:
-              application/json:
-                example: |
-                  {
-                    "error": {
-                      "code": 404,
-                      "message": "Not Found"
-                    }
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No item found"
                   }
+                }
 
         500:
             body:
@@ -484,29 +747,44 @@ baseUri: http://localhost:8000
                     }
                   }
 
-/appglasses:
-  displayName: Glass - AppVersions Relationship
+/readers:
+  displayName: Readers
   get:
-    description: Retrieve the list of glasses and apps relationship
+    description: Retrieve the list of readers
     responses:
       200:
-          body:
-            application/json:
-              example: |
-                [
-                  {
-                    "id": 2,
-                    "glass": "111111",
-                    "application": {
-                      "id": 1,
-                      "version": "1.0",
-                      "name": "Streye valu",
-                      "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu/1.0/EBHS_2016-05-02_10:05:50.apk",
-                      "package": "com.cks.EBHS"
-                    },
-                    "company": "1"
-                  }
-                ]
+        body:
+          application/json:
+            schema: |
+              {
+              "$schema": "http://json-schema.org/draft-03/schema",
+              "type": "array",
+              "description": "The readers list"
+              }
+            example: |
+              [
+                {
+                  "id": 22,
+                  "record_number": "111111110",
+                  "first_name": "Luis",
+                  "last_name": "Cavero Martínez",
+                  "email": "luiscavero90@gmail.com"
+                },
+                {
+                  "id": 23,
+                  "record_number": "111111111",
+                  "first_name": "Luis",
+                  "last_name": "Cavero Martínez",
+                  "email": "luiscavero91@gmail.com"
+                },
+                {
+                  "id": 24,
+                  "record_number": "111111112",
+                  "first_name": "Luis",
+                  "last_name": "Cavero Martínez",
+                  "email": "luiscavero92@gmail.com"
+                }
+              ]
       404:
           body:
             application/json:
@@ -514,7 +792,7 @@ baseUri: http://localhost:8000
                 {
                   "error": {
                     "code": 404,
-                    "message": "Not Found"
+                    "message": "No list found"
                   }
                 }
 
@@ -531,67 +809,56 @@ baseUri: http://localhost:8000
 
 
   post:
-    description: Create a new glasses and apps relationship
+    description: Create a new reader
     body:
       application/json:
         schema: |
           {
-          "$schema": "http://json-schema.org/draft-03/schema",
-          "type": "object",
-          "description": "A new glass",
-          "properties":
-            {
-              "glass": {"type": "string"},
-              "application":{"type": "integer"},
-              "company": {"type": "integer"}
-            }
+            "$schema": "http://json-schema.org/draft-03/schema",
+            "type": "object",
+            "description": "A new reader",
+            "properties":
+              {
+                "recordNumber": {"type": "string"},
+                "nif":{"type": "string"},
+                "firstName": {"type": "date"},
+                "lastName": {"type": "string"},
+                "email": {"type": "string"},
+                "phone": {"type": "string"}
+              }
           }
         example: |
           {
-            "glass_app":
+            "reader":
               {
-                "glass": 111111,
-                "application": 3,
-                "company": 1
+                "recordNumber": "232322",
+                "nif": "17494849A",
+                "firstName": "Luis",
+                "lastName": "Cavero Martínez",
+                "email": "luiscavero92@gmail.com",
+                "phone": "686958695"
               }
           }
-
     responses:
       201:
         body:
           application/json:
-           example: |
-                {
-                  "id": 4,
-                  "glass": "111111",
-                  "application": {
-                    "id": 3,
-                    "version": "1.1",
-                    "name": "Streye valu2",
-                    "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu2/1.1/app-debug_2016-05-02_12:05:42.apk",
-                    "package": "com.example.pedro.yuvtobitmap"
-                  },
-                  "company": "1"
-                }
-
+            example: |
+              {
+                "id": 42,
+                "record_number": "232322",
+                "first_name": "Luis",
+                "last_name": "Cavero Martínez",
+                "email": "luiscavero@gmail.com"
+              }
       400:
           body:
             application/json:
               example: |
                 {
                   "error": {
-                    "code": 400,
-                    "message": "Bad Request"
-                  }
-                }
-      404:
-          body:
-            application/json:
-              example: |
-                {
-                  "error": {
                     "code": 404,
-                    "message": "Not Found"
+                    "message": "Bad Request"
                   }
                 }
 
@@ -606,57 +873,35 @@ baseUri: http://localhost:8000
                   }
                 }
 
-  /{id_appcompany}:
+  /{id}:
     uriParameters:
-        id_appcompany:
-          description: The uniquely number which indentifies the app - glass relationship
-          type: integer
-
+      id:
+        description: The uniquely number which indentifies the reader
+        type: integer
     get:
-      description: Retrieve the specified glass and apps relationship
+      description: Retrieve the specified reader
       responses:
         200:
           body:
             application/json:
-             example: |
+              example: |
                 {
-                  "id": 4,
-                  "glass": "111111",
-                  "application": {
-                    "id": 3,
-                    "version": "1.1",
-                    "name": "Streye valu2",
-                    "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu2/1.1/app-debug_2016-05-02_12:05:42.apk",
-                    "package": "com.example.pedro.yuvtobitmap"
-                  },
-                  "company": "1"
+                  "id": 42,
+                  "record_number": "232322",
+                  "first_name": "Luis",
+                  "last_name": "Cavero Martínez",
+                  "email": "luiscavero@gmail.com"
                 }
         404:
-            body:
-              application/json:
-                example: |
-                  {
-                    "error": {
-                      "code": 404,
-                      "message": "Not Found"
-                    }
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No item found"
                   }
-
-        500:
-            body:
-              application/json:
-                example: |
-                  {
-                    "error": {
-                      "code": 500,
-                      "message": "Internal Server Error"
-                    }
-                  }
-
-    delete:
-      description: Delete the specified app - glass relationship
-      responses:
-        204:
+                }
 
         500:
           body:
@@ -669,101 +914,118 @@ baseUri: http://localhost:8000
                   }
                 }
 
-/allglassapps:
-  displayName: AppVersions of a Glass
-  /{id_glass}:
-    uriParameters:
-      id_glass:
-        description: The uniquely number which indentifies the glass
-        type: integer
-
-    get:
-      description: Retrieve all apps of the specified glass
+    delete:
+      description: Delete the specified reader
       responses:
-        200:
+        204:
+
+        404:
           body:
             application/json:
-             example: |
-                [
-                  {
-                    "id": 2,
-                    "glass": "111111",
-                    "application": {
-                      "id": 1,
-                      "version": "1.0",
-                      "name": "Streye valu",
-                      "internal_url": "/var/app/app/../var/uploads/app_files/Streye_valu/1.0/EBHS_2016-05-02_10:05:50.apk",
-                      "package": "com.cks.EBHS"
-                    },
-                    "company": "1"
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No item found"
                   }
-                ]
-        404:
-            body:
-              application/json:
-                example: |
-                  {
-                    "error": {
-                      "code": 404,
-                      "message": "Not Found"
-                    }
-                  }
+                }
 
         500:
-            body:
-              application/json:
-                example: |
-                  {
-                    "error": {
-                      "code": 500,
-                      "message": "Internal Server Error"
-                    }
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
                   }
-/glassupdates:
-  displayName: Glass updates
-  /{serial_number}:
-    uriParameters:
-      serial_number:
-        description: The uniquely serial number which indentifies the glass
-        type: string
-
-    get:
-      description: Retrieve all apps of the specified glass
+                }
+                
+    patch:
+      description: Update the specified reader
+      body:
+        application/json:
+          schema: |
+            {
+              "$schema": "http://json-schema.org/draft-03/schema",
+              "type": "object",
+              "description": "Changes in the reader",
+              "properties":
+                {
+                  "recordNumber": {"type": "string"},
+                  "nif":{"type": "string"},
+                  "firstName": {"type": "date"},
+                  "lastName": {"type": "string"},
+                  "email": {"type": "string"},
+                  "phone": {"type": "string"}
+                }
+            }
+          example: |
+            {
+              "reader":
+                {
+                  "firstName": "D.Luis"
+                }
+            }
+          
       responses:
         200:
           body:
             application/json:
-             example: |
+              example: |
                 {
-                  "buildInformation": [
-                    {
-                      "action": "INSTALL",
-                      "build_id": 1,
-                      "build_name": "Streye valu",
-                      "build_url": "localhost/appdownloads/1",
-                      "package_name": "com.cks.EBHS"
+                  "article": {
+                    "id": 15,
+                    "ref_number": "343434344",
+                    "isbn": "65656565656-4",
+                    "title": "Alfagann es Flanagan",
+                    "subtitle": "el detective",
+                    "authors": [
+                      "Miguel de Cervantes",
+                      "Galileo Galilei",
+                      "Luilli"
+                    ],
+                    "edition_year": 1990,
+                    "publisher": "Circulo de lectores",
+                    "legal_deposit": "Depósito legal: 4",
+                    "cdu": {
+                      "id": 1002,
+                      "code": "54",
+                      "description": "Química\n"
                     },
-                    {
-                      "action": "UNINSTALL",
-                      "build_id": 3,
-                      "build_name": "Streye valu2",
-                      "build_url": "localhost/appdownloads/3",
-                      "package_name": "com.example.pedro.yuvtobitmap"
+                    "location": "Estanteria juvenil",
+                    "category": {
+                      "id": 6,
+                      "description": "BOOK"
                     },
-                    {
-                      "action": "UNINSTALL",
-                      "build_id": 4,
-                      "build_name": "Streye Luis",
-                      "build_url": "localhost/appdownloads/4",
-                      "package_name": "com.example.pedro.yuvtobitmap"
-                    }
-                  ]
+                    "note": "The best note",
+                    "loanable": true
+                  },
+                  "lost": false,
+                  "damaged": false,
+                  "available": true
                 }
+        400:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 400,
+                    "message": "Bad Request"
+                  }
+                }
+
         404:
-            body:
-              application/json:
-                example: |
-                  []
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No item found"
+                  }
+                }
 
         500:
             body:

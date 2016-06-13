@@ -92,7 +92,7 @@ jms_serializer:
 
 nelmio_cors:
     defaults:
-        allow_credentials: false
+        allow_credentials: true
         allow_origin: []
         allow_headers: []
         allow_methods: []
@@ -109,7 +109,8 @@ nelmio_cors:
     #         max_age: 3600
     #         hosts: ['^api\.']
         '^/':
-            allow_origin: ['^http://localhost:80']
+            allow_origin: ['^http://127.0.0.1:[0-9]+']
             allow_headers: ['*']
-            allow_methods: ['POST', 'PUT', 'GET', 'DELETE','OPTIONS']
+            allow_methods: ['POST', 'PUT', 'GET', 'DELETE','OPTIONS', 'PATCH']
+            origin_regex: true
             max_age: 3600

@@ -8,6 +8,8 @@ use AppBundle\Entity\Article;
 
 class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
 {
+    
+
     public function load(ObjectManager $manager)
     {
         $cdus = $manager->getRepository('AppBundle:CDU')->findAll();

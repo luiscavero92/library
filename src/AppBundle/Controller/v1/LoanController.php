@@ -3,6 +3,10 @@ namespace AppBundle\Controller\v1;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\Delete;
+use FOS\RestBundle\Controller\Annotations\Patch;
+
 
 class LoanController extends RESTParentController
 {
@@ -21,7 +25,9 @@ class LoanController extends RESTParentController
 	{
 		return parent::getOne($id);
 	}
-
+    /**
+     * @Post("/admin/loans")
+     */
 	public function postLoansAction(Request $request)
 	{
         $validItem = $this->validateWithForm(new $this->fullEntityName, $request);
@@ -35,6 +41,9 @@ class LoanController extends RESTParentController
         return $this->returnView($validItem, 201);   
 	}
 
+    /**
+     * @Patch("/admin/loans/{id}")
+     */
     public function patchLoansAction(Request $request, $id)
     {
         $item = $this->getOneById($id);
@@ -54,6 +63,9 @@ class LoanController extends RESTParentController
         return $this->returnView($validItem, 200); 
     }
 
+    /**
+     * @Delete("/admin/loans/{id}")
+     */
     public function deleteLoansAction($id)
     {
         return parent::delete($id);

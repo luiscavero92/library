@@ -2,6 +2,10 @@
 namespace AppBundle\Controller\v1;
 
 use Symfony\Component\HttpFoundation\Request;
+use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\Delete;
+use FOS\RestBundle\Controller\Annotations\Patch;
+
 
 class CopyController extends RESTParentController
 {
@@ -21,6 +25,9 @@ class CopyController extends RESTParentController
 		return parent::getOne($id);
 	}
 
+    /**
+     * @Post("/admin/copies")
+     */
 	public function postCopyAction(Request $request)
 	{
         $validItem = $this->validateWithForm(new $this->fullEntityName, $request);
@@ -34,11 +41,17 @@ class CopyController extends RESTParentController
         return $this->returnView($validItem, 201);  
 	}
 
+    /**
+     * @Patch("/admin/copies/{id}")
+     */
     public function patchCopyAction(Request $request, $id)
     {
         return parent::patch($request, $id);  
     }
 
+    /**
+     * @Delete("/admin/copies/{id}")
+     */
     public function deleteCopyAction($id)
     {
         return parent::delete($id);

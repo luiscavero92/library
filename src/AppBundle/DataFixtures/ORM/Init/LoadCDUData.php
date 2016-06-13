@@ -20,7 +20,7 @@ class LoadCDUData extends AbstractFixture implements OrderedFixtureInterface
 
     		$code = $splitEntry[0];
 
-    		$description = $splitEntry[1];
+    		$description = preg_replace("/\n/", "", $splitEntry[1]);
 
     		$cduEntry = new CDU();
 	        $cduEntry->setCode($code);

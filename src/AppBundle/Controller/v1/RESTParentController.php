@@ -75,6 +75,23 @@ class RESTParentController extends FOSRestController
         return $this->returnView($items, 200);
     }
 
+    public function getOneWhere($filters)
+    {
+        try{
+            $repository = $this->getEntityRep($this->entityName);
+            $items = $repository->findOneBy($filters);
+        } catch (\Exception $e) {
+            $this->get('logger')->error($e->getMessage(), array("TRACE ERROR: ".__METHOD__));
+            throw new HttpException(500, $this->getMySQLErrorMsg($e->getMessage()));
+        }
+
+        if(!$items){
+            throw new HttpException(404, $this->noListFoundMsg);
+        }
+        
+        return $this->returnView($items, 200);
+    }
+
 
 	public function post(Request $request)
 	{

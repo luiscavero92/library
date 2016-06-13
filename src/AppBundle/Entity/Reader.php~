@@ -55,7 +55,6 @@ class Reader implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=25, unique=true)
-     * @JMS\Groups({"default"})
      */
     private $username;
 
@@ -203,7 +202,6 @@ class Reader implements UserInterface, \Serializable
      * @var array
      *
      * @ORM\Column(name="roles", type="array")
-     * @JMS\Groups({"default"})
      */
     private $roles = ["ROLE_USER"];
 
@@ -520,20 +518,6 @@ class Reader implements UserInterface, \Serializable
     public function setPassword($password)
     {
         $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Set roles
-     *
-     * @param array $roles
-     *
-     * @return Reader
-     */
-    public function setRoles($roles)
-    {
-        $this->roles = $roles;
 
         return $this;
     }

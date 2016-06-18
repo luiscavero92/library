@@ -177,7 +177,7 @@ class RESTParentController extends FOSRestController
                 
             }
 
-            throw new HttpException(400, $this->basicFormErrorsText . $msg);
+            throw new HttpException(400, $this->basicFormErrorsText . preg_replace('/\n/', '',$msg));
         }
 
         return $classInstance;
@@ -274,7 +274,7 @@ class RESTParentController extends FOSRestController
         switch ($errorCode) {
             case '23000':
                 if($secondErrorCode == '1451'){
-                 return 'This register has foreign keys, can not be deleted';
+                 return 'This register have foreign keys, can not be deleted';
                 }
                 if($secondErrorCode == '1048'){
                  return 'Bad Internal Request, please contact with the administrator';

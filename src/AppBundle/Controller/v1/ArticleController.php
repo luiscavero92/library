@@ -16,7 +16,7 @@ class ArticleController extends RESTParentController
     }
 
     /**
-     * @Get("/admin/articles")
+     * @Get("/articles")
      */
 	public function getArticlesAction()
 	{

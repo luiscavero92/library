@@ -18,7 +18,7 @@ class LoadCopyData extends AbstractFixture implements OrderedFixtureInterface
 
             $copy = new Copy();
             $copy->setArticle($randArticle);
-            $copy->setCopyNumber('COPYNUMBER'.$i);
+            $copy->setCopyNumber('2323232'.$i);
             $copy->setAddedOn(new \DateTime());
 
             $manager->persist($copy);

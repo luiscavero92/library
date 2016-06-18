@@ -84,7 +84,7 @@ class Reader implements UserInterface, \Serializable
      *      minMessage = "nif must be at least {{ limit }} characters long",
      *      maxMessage = "nif cannot be longer than {{ limit }} characters"
      * )
-     *
+     * @JMS\Groups({"default"})
      */
     private $nif;
 
@@ -176,7 +176,7 @@ class Reader implements UserInterface, \Serializable
      *      minMessage = "phone must be at least {{ limit }} characters long",
      *      maxMessage = "phone cannot be longer than {{ limit }} characters"
      * )
-     *
+     * @JMS\Groups({"default"})
      */
     private $phone;
 

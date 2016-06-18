@@ -22,6 +22,8 @@ class ReaderType extends AbstractType
             ->add('lastName')
             ->add('email')
             ->add('phone')
+            ->add('username')
+            ->add('password')
         ;
     }
     

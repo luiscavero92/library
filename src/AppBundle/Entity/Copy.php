@@ -62,7 +62,7 @@ class Copy
     private $copyNumber;
 
     /**
-     * @var \DateTime
+     * @var \Date
      *
      * @ORM\Column(name="addedOn", type="date")
      *
@@ -178,7 +178,7 @@ class Copy
     /**
      * Set addedOn
      *
-     * @param \DateTime $addedOn
+     * @param \Date $addedOn
      *
      * @return Copy
      */
@@ -192,7 +192,7 @@ class Copy
     /**
      * Get addedOn
      *
-     * @return \DateTime
+     * @return \Date
      */
     public function getAddedOn()
     {

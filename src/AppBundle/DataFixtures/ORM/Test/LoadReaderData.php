@@ -43,6 +43,10 @@ class LoadReaderData extends AbstractFixture implements OrderedFixtureInterface,
 
         $manager->persist($reader);
 
+        $userNames = ["Luis", "Juanjo", "Susan", "David", "Cristian"];
+
+        $userLastNames = ["Cavero Martínez", "Martínez", "Hernandez Luján", "Bernabé Casas"];
+
         for($i=0; $i<20; $i++){
 
 
@@ -58,8 +62,8 @@ class LoadReaderData extends AbstractFixture implements OrderedFixtureInterface,
             $reader->setPassword($encoded);
 
             $reader->setNif('17468520A');
-            $reader->setFirstName('Luis');
-            $reader->setLastName('Cavero Martínez');
+            $reader->setFirstName($userNames[array_rand($userNames)]);
+            $reader->setLastName($userLastNames[array_rand($userLastNames)]);
             $reader->setEmail('luiscavero9' . $i . '@gmail.com');
             $reader->setPhone('69912929'.$i);
             $reader->setPhoto('laquesea '.$i);

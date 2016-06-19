@@ -22,3 +22,11 @@ RUN echo "alias symfony='sudo -u www-data php /var/www/symfony/bin/console'" >> 
 RUN chown -R 1000:www-data /var
 
 WORKDIR /var/www/symfony
+
+RUN php composer.phar install
+
+RUN symfony doctrine:database:create
+
+RUN symfony doctrine:migrations:migrate -n
+
+RUN symfony doctrine:fixtures:load --fixtures="src/AppBundle/DataFixtures/ORM/Test" -n

@@ -1,0 +1,23 @@
+articles:
+    resource: AppBundle\Controller\v1\ArticleController
+    type:     rest
+
+copy:
+    resource: AppBundle\Controller\v1\CopyController
+    type:     rest
+
+cdu:
+    resource: AppBundle\Controller\v1\CDUController
+    type:     rest
+
+category:
+    resource: AppBundle\Controller\v1\CategoryController
+    type:     rest
+
+reader:
+    resource: AppBundle\Controller\v1\ReaderController
+    type:     rest
+
+loan:
+    resource: AppBundle\Controller\v1\LoanController
+    type:     rest

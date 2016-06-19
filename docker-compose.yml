@@ -1,0 +1,41 @@
+version: '2'
+services:
+    db:
+        image: mysql:5.6
+        container_name: libdb
+        ports:
+            - "3307:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+    php:
+        build: ./docker-settings/php-fpm
+        container_name: libphp
+        expose:
+            - "9000"
+        volumes:
+            - .:/var/www/symfony
+            - ./docker-settings/logs/symfony:/var/www/symfony/var/logs
+        links:
+            - db
+    nginx:
+        build: ./docker-settings/nginx
+        container_name: libnginx
+        ports:
+            - "9000:80"
+        links:
+            - php
+        volumes_from:
+            - php
+        volumes:
+            - ./docker-settings/logs/nginx/:/var/log/nginx
+    elk:
+        image: willdurand/elk
+        container_name: libelk
+        ports:
+            - "81:80"
+        volumes:
+            - ./docker-settings/elk/logstash:/etc/logstash
+            - ./docker-settings/elk/logstash/patterns:/opt/logstash/patterns
+        volumes_from:
+            - php
+            - nginx

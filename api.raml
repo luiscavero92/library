@@ -1,0 +1,1667 @@
+#%RAML 0.8
+title: Library
+version: v1
+baseUri: http://localhost:9000
+
+/articles:
+  displayName: Articles
+  get:
+    description: Retrieve the list of articles
+    responses:
+      200:
+        body:
+          application/json:
+            schema: |
+              {
+              "$schema": "http://json-schema.org/draft-03/schema",
+              "type": "array",
+              "description": "The articles list"
+              }
+            example: |
+              [
+                {
+                  "id": 11,
+                  "ref_number": "343434340",
+                  "isbn": "65656565656-0",
+                  "title": "Alfagann es Flanagan",
+                  "subtitle": "el detective",
+                  "authors": [
+                    "Miguel de Cervantes",
+                    "Galileo Galilei",
+                    "Luilli"
+                  ],
+                  "edition_year": 1990,
+                  "publisher": "Circulo de lectores",
+                  "legal_deposit": "Depósito legal: 0",
+                  "cdu": {
+                    "id": 1288,
+                    "code": "82(09)",
+                    "description": "Crítica literaria. Historia de la literatura\n"
+                  },
+                  "location": "Estanteria juvenil",
+                  "category": {
+                    "id": 9,
+                    "description": "VHS"
+                  },
+                  "note": "The best note",
+                  "loanable": true
+                }
+              ]
+      404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No list found"
+                  }
+                }
+
+      500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+
+  post:
+    description: Create a new article
+    body:
+      application/json:
+        schema: |
+          {
+            "$schema": "http://json-schema.org/draft-03/schema",
+            "type": "object",
+            "description": "A new article",
+            "properties":
+              {
+                "title": {"type": "string"},
+                "subtitle":{"type": "string", "required": "false"},
+                "refNumber": {"type": "string"},
+                "editionYear": {"type": "string", "required": false},
+                "isbn": {"type": "string"},
+                "publisher": {"type": "string"},
+                "legalDeposit": {"type": "string", "required": false},
+                "cdu": {"type": "integer"},
+                "location": {"type": "string"},
+                "category": {"type": "integer"},
+                "note": {"type": "string", "required": false},
+                "loanable": {"type": "boolean", "required": false},
+                "authors": {"type": "array"}
+              }
+          }
+        example: |
+          {
+            "article":
+              {
+                "title": "Mil leguas de viaje submarino",
+                "subtitle": "Una historia real",
+                "refNumber": "111222333",
+                "editionYear": "1850",
+                "isbn": "349A-BC23232",
+                "publisher": "Círculo de lectores",
+                "legalDeposit": "NA.342-2005",
+                "cdu": 800,
+                "location": "A-7",
+                "category": 6,
+                "note": "Un libro muy recomendado para jóvenes",
+                "loanable": true,
+                "authors": ["Julio Verne"]
+              }
+          }
+    responses:
+      201:
+        body:
+          application/json:
+            example: |
+              {
+                "id": 21,
+                "ref_number": "111222333",
+                "isbn": "349A-BC23232",
+                "title": "Mil leguas de viaje submarino",
+                "subtitle": "Una historia real",
+                "authors": [
+                  "Julio Verne"
+                ],
+                "edition_year": 1850,
+                "publisher": "Círculo de lectores",
+                "legal_deposit": "NA.342-2005",
+                "cdu": {
+                  "id": 800,
+                  "code": "007",
+                  "description": "Teoría de la comunicación y del control en general. Cibernética\n"
+                },
+                "location": "A-7",
+                "category": {
+                  "id": 6,
+                  "description": "BOOK"
+                },
+                "note": "Un libro muy recomendado para jóvenes",
+                "loanable": true
+              }
+      400:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 400,
+                    "message": "Bad Request"
+                  }
+                }
+
+      500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+  /{id}:
+    uriParameters:
+      id:
+        description: The uniquely number which indentifies the article
+        type: integer
+    get:
+      description: Retrieve the specified article
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "id": 21,
+                  "ref_number": "111222333",
+                  "isbn": "349A-BC23232",
+                  "title": "Mil leguas de viaje submarino",
+                  "subtitle": "Una historia real",
+                  "authors": [
+                    "Julio Verne"
+                  ],
+                  "edition_year": 1850,
+                  "publisher": "Círculo de lectores",
+                  "legal_deposit": "NA.342-2005",
+                  "cdu": {
+                    "id": 800,
+                    "code": "007",
+                    "description": "Teoría de la comunicación y del control en general. Cibernética\n"
+                  },
+                  "location": "A-7",
+                  "category": {
+                    "id": 6,
+                    "description": "BOOK"
+                  },
+                  "note": "Un libro muy recomendado para jóvenes",
+                  "loanable": true
+                }
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No item found"
+                  }
+                }
+
+        500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+    delete:
+      description: Delete the specified article
+      responses:
+        204:
+
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No item found"
+                  }
+                }
+
+        500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+                
+    patch:
+      description: Update the specified article
+      body:
+        application/json:
+          schema: |
+            {
+              "$schema": "http://json-schema.org/draft-03/schema",
+              "type": "object",
+              "description": "Changes in the article",
+              "properties":
+                {
+                  "title": {"type": "string"},
+                  "subtitle":{"type": "string", "required": false},
+                  "refNumber": {"type": "string"},
+                  "editionYear": {"type": "string", "required": false},
+                  "isbn": {"type": "string"},
+                  "publisher": {"type": "string"},
+                  "legalDeposit": {"type": "string", "required": false},
+                  "cdu": {"type": "integer"},
+                  "location": {"type": "string"},
+                  "category": {"type": "integer"},
+                  "note": {"type": "string", "required": false},
+                  "loanable": {"type": "boolean", "required": false},
+                  "authors": {"type": "array"}
+                }
+            }
+          example: |
+            {
+              "article":
+                {
+                  "title": "Mil leguas de viaje en submarino",
+                  "subtitle": "Una historia casi real",
+                  "editionYear": "1853",
+                  "publisher": "Círculo de lectores",
+                  "legalDeposit": "NA.342-2005",
+                  "cdu": 820,
+                  "location": "A-76",
+                  "category": 7,
+                  "note": "Un libro muy altamente recomendado para jóvenes",
+                  "loanable": false
+                }
+            }
+          
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "title": "Mil leguas de viaje en submarino",
+                  "subtitle": "Una historia casi real",
+                  "edition_year": 1853,
+                  "publisher": "Círculo de lectores",
+                  "legal_deposit": "NA.342-2005",
+                  "cdu": {
+                    "id": 820,
+                    "code": "122/129",
+                    "description": "Metafísica especial\n"
+                  },
+                  "location": "A-76",
+                  "category": {
+                    "id": 7,
+                    "description": "CD"
+                  },
+                  "note": "Un libro muy altamente recomendado para jóvenes",
+                  "loanable": false
+                }
+        400:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 400,
+                    "message": "Bad Request"
+                  }
+                }
+
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No item found"
+                  }
+                }
+
+        500:
+            body:
+              application/json:
+                example: |
+                  {
+                    "error": {
+                      "code": 500,
+                      "message": "Internal Server Error"
+                    }
+                  }
+
+/copies:
+  displayName: Copies
+  get:
+    description: Retrieve the list of copies
+    responses:
+      200:
+        body:
+          application/json:
+            schema: |
+              {
+              "$schema": "http://json-schema.org/draft-03/schema",
+              "type": "array",
+              "description": "The copies list"
+              }
+            example: |
+              [
+                {
+                  "id": 38,
+                  "article": {
+                    "id": 15,
+                    "ref_number": "343434344",
+                    "isbn": "65656565656-4",
+                    "title": "Alfagann es Flanagan",
+                    "subtitle": "el detective",
+                    "authors": [
+                      "Miguel de Cervantes",
+                      "Galileo Galilei",
+                      "Luilli"
+                    ],
+                    "edition_year": 1990,
+                    "publisher": "Circulo de lectores",
+                    "legal_deposit": "Depósito legal: 4",
+                    "cdu": {
+                      "id": 1002,
+                      "code": "54",
+                      "description": "Química\n"
+                    },
+                    "location": "Estanteria juvenil",
+                    "category": {
+                      "id": 6,
+                      "description": "BOOK"
+                    },
+                    "note": "The best note",
+                    "loanable": true
+                  },
+                  "copy_number": "COPYNUMBER0",
+                  "added_on": "2016-05-31T00:00:00+0000",
+                  "lost": false,
+                  "damaged": false,
+                  "available": true
+                },
+                {
+                  "id": 39,
+                  "article": {
+                    "id": 11,
+                    "ref_number": "343434340",
+                    "isbn": "65656565656-0",
+                    "title": "Alfagann es Flanagan",
+                    "subtitle": "el detective",
+                    "authors": [
+                      "Miguel de Cervantes",
+                      "Galileo Galilei",
+                      "Luilli"
+                    ],
+                    "edition_year": 1990,
+                    "publisher": "Circulo de lectores",
+                    "legal_deposit": "Depósito legal: 0",
+                    "cdu": {
+                      "id": 1288,
+                      "code": "82(09)",
+                      "description": "Crítica literaria. Historia de la literatura\n"
+                    },
+                    "location": "Estanteria juvenil",
+                    "category": {
+                      "id": 9,
+                      "description": "VHS"
+                    },
+                    "note": "The best note",
+                    "loanable": true
+                  },
+                  "copy_number": "COPYNUMBER1",
+                  "added_on": "2016-05-31T00:00:00+0000",
+                  "lost": false,
+                  "damaged": false,
+                  "available": true
+                }
+              ]
+      404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No list found"
+                  }
+                }
+
+      500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+
+  post:
+    description: Create a new copy
+    body:
+      application/json:
+        schema: |
+          {
+            "$schema": "http://json-schema.org/draft-03/schema",
+            "type": "object",
+            "description": "A new copy",
+            "properties":
+              {
+                "article": {"type": "integer"},
+                "copyNumber":{"type": "string"},
+                "addedOn": {"type": "date", "required": false},
+                "note": {"type": "string", "required": false}
+              }
+          }
+        example: |
+          {
+            "copy":
+              {
+                "article": 12,
+                "copyNumber":"120032A",
+                "addedOn": "2000-10-01",
+                "note": "The copy is a bit damaged",
+                "damaged": true
+              }
+          }
+    responses:
+      201:
+        body:
+          application/json:
+            example: |
+              {
+                "id": 76,
+                "article": {
+                  "id": 12,
+                  "ref_number": "343434341",
+                  "isbn": "65656565656-1",
+                  "title": "Alfagann es Flanagan",
+                  "subtitle": "el detective",
+                  "authors": [
+                    "Miguel de Cervantes",
+                    "Galileo Galilei",
+                    "Luilli"
+                  ],
+                  "edition_year": 1990,
+                  "publisher": "Circulo de lectores",
+                  "legal_deposit": "Depósito legal: 1",
+                  "cdu": {
+                    "id": 875,
+                    "code": "330",
+                    "description": "Ciencia económica. Economía política. Doctrinas económicas\n"
+                  },
+                  "location": "Estanteria juvenil",
+                  "category": {
+                    "id": 10,
+                    "description": "OTHER"
+                  },
+                  "note": "The best note",
+                  "loanable": true
+                },
+                "copy_number": "120032A",
+                "added_on": "2000-10-01T00:00:00+0000",
+                "lost": false,
+                "damaged": true,
+                "note": "The copy is a bit damaged",
+                "available": false
+              }
+      400:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 400,
+                    "message": "Bad Request"
+                  }
+                }
+
+      500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+  /{id}:
+    uriParameters:
+      id:
+        description: The uniquely number which indentifies the copy
+        type: integer
+    get:
+      description: Retrieve the specified copy
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "id": 76,
+                  "article": {
+                    "id": 12,
+                    "ref_number": "343434341",
+                    "isbn": "65656565656-1",
+                    "title": "Alfagann es Flanagan",
+                    "subtitle": "el detective",
+                    "authors": [
+                      "Miguel de Cervantes",
+                      "Galileo Galilei",
+                      "Luilli"
+                    ],
+                    "edition_year": 1990,
+                    "publisher": "Circulo de lectores",
+                    "legal_deposit": "Depósito legal: 1",
+                    "cdu": {
+                      "id": 875,
+                      "code": "330",
+                      "description": "Ciencia económica. Economía política. Doctrinas económicas\n"
+                    },
+                    "location": "Estanteria juvenil",
+                    "category": {
+                      "id": 10,
+                      "description": "OTHER"
+                    },
+                    "note": "The best note",
+                    "loanable": true
+                  },
+                  "copy_number": "120032A",
+                  "added_on": "2000-10-01T00:00:00+0000",
+                  "lost": false,
+                  "damaged": true,
+                  "note": "The copy is a bit damaged",
+                  "available": false
+                }
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No item found"
+                  }
+                }
+
+        500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+    delete:
+      description: Delete the specified article
+      responses:
+        204:
+
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No item found"
+                  }
+                }
+
+        500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+                
+    patch:
+      description: Update the specified copy
+      body:
+        application/json:
+          schema: |
+            {
+              "$schema": "http://json-schema.org/draft-03/schema",
+              "type": "object",
+              "description": "Changes in the copy",
+              "properties":
+                {
+                  "article": {"type": "integer"},
+                  "copyNumber":{"type": "string"},
+                  "addedOn": {"type": "date", "required": false},
+                  "note": {"type": "string", "required": false}
+                }
+            }
+          example: |
+            {
+              "copy":
+              {
+                "article": 15,
+                "damaged": false
+              }
+            }
+          
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "article": {
+                    "id": 15,
+                    "ref_number": "343434344",
+                    "isbn": "65656565656-4",
+                    "title": "Alfagann es Flanagan",
+                    "subtitle": "el detective",
+                    "authors": [
+                      "Miguel de Cervantes",
+                      "Galileo Galilei",
+                      "Luilli"
+                    ],
+                    "edition_year": 1990,
+                    "publisher": "Circulo de lectores",
+                    "legal_deposit": "Depósito legal: 4",
+                    "cdu": {
+                      "id": 1002,
+                      "code": "54",
+                      "description": "Química\n"
+                    },
+                    "location": "Estanteria juvenil",
+                    "category": {
+                      "id": 6,
+                      "description": "BOOK"
+                    },
+                    "note": "The best note",
+                    "loanable": true
+                  },
+                  "lost": false,
+                  "damaged": false,
+                  "available": true
+                }
+        400:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 400,
+                    "message": "Bad Request"
+                  }
+                }
+
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No item found"
+                  }
+                }
+
+        500:
+            body:
+              application/json:
+                example: |
+                  {
+                    "error": {
+                      "code": 500,
+                      "message": "Internal Server Error"
+                    }
+                  }
+
+/readers:
+  displayName: Readers
+  get:
+    description: Retrieve the list of readers
+    responses:
+      200:
+        body:
+          application/json:
+            schema: |
+              {
+              "$schema": "http://json-schema.org/draft-03/schema",
+              "type": "array",
+              "description": "The readers list"
+              }
+            example: |
+              [
+                {
+                  "id": 22,
+                  "record_number": "111111110",
+                  "first_name": "Luis",
+                  "last_name": "Cavero Martínez",
+                  "email": "luiscavero90@gmail.com"
+                },
+                {
+                  "id": 23,
+                  "record_number": "111111111",
+                  "first_name": "Luis",
+                  "last_name": "Cavero Martínez",
+                  "email": "luiscavero91@gmail.com"
+                },
+                {
+                  "id": 24,
+                  "record_number": "111111112",
+                  "first_name": "Luis",
+                  "last_name": "Cavero Martínez",
+                  "email": "luiscavero92@gmail.com"
+                }
+              ]
+      404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No list found"
+                  }
+                }
+
+      500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+
+  post:
+    description: Create a new reader
+    body:
+      application/json:
+        schema: |
+          {
+            "$schema": "http://json-schema.org/draft-03/schema",
+            "type": "object",
+            "description": "A new reader",
+            "properties":
+              {
+                "recordNumber": {"type": "string"},
+                "nif":{"type": "string"},
+                "firstName": {"type": "date"},
+                "lastName": {"type": "string"},
+                "email": {"type": "string"},
+                "phone": {"type": "string"}
+              }
+          }
+        example: |
+          {
+            "reader":
+              {
+                "recordNumber": "232322",
+                "nif": "17494849A",
+                "firstName": "Luis",
+                "lastName": "Cavero Martínez",
+                "email": "luiscavero92@gmail.com",
+                "phone": "686958695"
+              }
+          }
+    responses:
+      201:
+        body:
+          application/json:
+            example: |
+              {
+                "id": 42,
+                "record_number": "232322",
+                "first_name": "Luis",
+                "last_name": "Cavero Martínez",
+                "email": "luiscavero@gmail.com"
+              }
+      400:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 400,
+                    "message": "Bad Request"
+                  }
+                }
+
+      500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+  /{id}:
+    uriParameters:
+      id:
+        description: The uniquely number which indentifies the reader
+        type: integer
+    get:
+      description: Retrieve the specified reader
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "id": 42,
+                  "record_number": "232322",
+                  "first_name": "Luis",
+                  "last_name": "Cavero Martínez",
+                  "email": "luiscavero@gmail.com"
+                }
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No item found"
+                  }
+                }
+
+        500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+    delete:
+      description: Delete the specified reader
+      responses:
+        204:
+
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No item found"
+                  }
+                }
+
+        500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+                
+    patch:
+      description: Update the specified reader
+      body:
+        application/json:
+          schema: |
+            {
+              "$schema": "http://json-schema.org/draft-03/schema",
+              "type": "object",
+              "description": "Changes in the reader",
+              "properties":
+                {
+                  "recordNumber": {"type": "string"},
+                  "nif":{"type": "string"},
+                  "firstName": {"type": "date"},
+                  "lastName": {"type": "string"},
+                  "email": {"type": "string"},
+                  "phone": {"type": "string"}
+                }
+            }
+          example: |
+            {
+              "reader":
+                {
+                  "firstName": "D.Luis"
+                }
+            }
+          
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "id": 42,
+                  "recordNumber": "232322",
+                  "firstName": "D.Luis",
+                  "lastName": "Cavero Martínez",
+                  "email": "luiscavero@gmail.com"
+                }
+        400:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 400,
+                    "message": "Bad Request"
+                  }
+                }
+
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No item found"
+                  }
+                }
+
+        500:
+            body:
+              application/json:
+                example: |
+                  {
+                    "error": {
+                      "code": 500,
+                      "message": "Internal Server Error"
+                    }
+                  }
+
+/loans:
+  displayName: Loans
+  get:
+    description: Retrieve the list of loans
+    responses:
+      200:
+        body:
+          application/json:
+            schema: |
+              {
+              "$schema": "http://json-schema.org/draft-03/schema",
+              "type": "array",
+              "description": "The loans list"
+              }
+            example: |
+              [
+                {
+                  "id": 22,
+                  "reader": {
+                    "id": 37,
+                    "recordNumber": "1111111115",
+                    "firstName": "Luis",
+                    "lastName": "Cavero Martínez",
+                    "email": "luiscavero915@gmail.com"
+                  },
+                  "copy": {
+                    "id": 39,
+                    "article": {
+                      "id": 11,
+                      "refNumber": "343434340",
+                      "isbn": "65656565656-0",
+                      "title": "jaja",
+                      "subtitle": "el detective",
+                      "authors": [
+                        "Miguel de Cervantes",
+                        "Galileo Galilei",
+                        "Luilli"
+                      ],
+                      "editionYear": 1990,
+                      "publisher": "Circulo de lectores",
+                      "legalDeposit": "Depósito legal: 0",
+                      "cdu": {
+                        "id": 1288,
+                        "code": "82(09)",
+                        "description": "Crítica literaria. Historia de la literatura\n"
+                      },
+                      "location": "Estanteria juvenil",
+                      "category": {
+                        "id": 9,
+                        "description": "VHS"
+                      },
+                      "note": "The best note",
+                      "loanable": true
+                    },
+                    "copyNumber": "COPYNUMBER1",
+                    "addedOn": "2016-05-31T00:00:00+0000",
+                    "lost": false,
+                    "damaged": false,
+                    "available": true
+                  },
+                  "loanDate": "2016-05-31T00:00:00+0000"
+                },
+                {
+                  "id": 23,
+                  "reader": {
+                    "id": 38,
+                    "recordNumber": "1111111116",
+                    "firstName": "Luis",
+                    "lastName": "Cavero Martínez",
+                    "email": "luiscavero916@gmail.com"
+                  },
+                  "copy": {
+                    "id": 40,
+                    "article": {
+                      "id": 12,
+                      "refNumber": "343434341",
+                      "isbn": "65656565656-1",
+                      "title": "Alfagann es Flanagan",
+                      "subtitle": "el detective",
+                      "authors": [
+                        "Miguel de Cervantes",
+                        "Galileo Galilei",
+                        "Luilli"
+                      ],
+                      "editionYear": 1990,
+                      "publisher": "Circulo de lectores",
+                      "legalDeposit": "Depósito legal: 1",
+                      "cdu": {
+                        "id": 875,
+                        "code": "330",
+                        "description": "Ciencia económica. Economía política. Doctrinas económicas\n"
+                      },
+                      "location": "Estanteria juvenil",
+                      "category": {
+                        "id": 10,
+                        "description": "OTHER"
+                      },
+                      "note": "The best note",
+                      "loanable": true
+                    },
+                    "copyNumber": "COPYNUMBER2",
+                    "addedOn": "2016-05-31T00:00:00+0000",
+                    "lost": false,
+                    "damaged": false,
+                    "available": true
+                  },
+                  "loanDate": "2016-05-31T00:00:00+0000"
+                }
+              ]
+      404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No list found"
+                  }
+                }
+
+      500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+
+  post:
+    description: Create a new loan
+    body:
+      application/json:
+        schema: |
+          {
+            "$schema": "http://json-schema.org/draft-03/schema",
+            "type": "object",
+            "description": "A new loan",
+            "properties":
+              {
+                "reader": {"type": "integer"},
+                "copy":{"type": "integer"}
+              }
+          }
+        example: |
+          {
+            "loan":
+              {
+                "reader": 22,
+                "copy": 42
+              }
+          }
+    responses:
+      201:
+        body:
+          application/json:
+            example: |
+              {
+                "id": 42,
+                "reader": {
+                  "id": 22,
+                  "recordNumber": "111111110",
+                  "firstName": "Luis",
+                  "lastName": "Cavero Martínez",
+                  "email": "luiscavero90@gmail.com"
+                },
+                "copy": {
+                  "id": 42,
+                  "article": {
+                    "id": 16,
+                    "refNumber": "343434345",
+                    "isbn": "65656565656-5",
+                    "title": "Alfagann es Flanagan",
+                    "subtitle": "el detective",
+                    "authors": [
+                      "Miguel de Cervantes",
+                      "Galileo Galilei",
+                      "Luilli"
+                    ],
+                    "editionYear": 1990,
+                    "publisher": "Circulo de lectores",
+                    "legalDeposit": "Depósito legal: 5",
+                    "cdu": {
+                      "id": 849,
+                      "code": "296",
+                      "description": "Judaísmo\n"
+                    },
+                    "location": "Estanteria juvenil",
+                    "category": {
+                      "id": 6,
+                      "description": "BOOK"
+                    },
+                    "note": "The best note",
+                    "loanable": true
+                  },
+                  "copyNumber": "COPYNUMBER4",
+                  "addedOn": "2016-05-31T00:00:00+0000",
+                  "lost": false,
+                  "damaged": false,
+                  "available": true
+                },
+                "loanDate": "2016-06-01T18:05:01+0000"
+              }
+      400:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 400,
+                    "message": "Bad Request"
+                  }
+                }
+
+      500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+  /{id}:
+    uriParameters:
+      id:
+        description: The uniquely number which indentifies the loan
+        type: integer
+    get:
+      description: Retrieve the specified loan
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "id": 42,
+                  "reader": {
+                    "id": 22,
+                    "recordNumber": "111111110",
+                    "firstName": "Luis",
+                    "lastName": "Cavero Martínez",
+                    "email": "luiscavero90@gmail.com"
+                  },
+                  "copy": {
+                    "id": 42,
+                    "article": {
+                      "id": 16,
+                      "refNumber": "343434345",
+                      "isbn": "65656565656-5",
+                      "title": "Alfagann es Flanagan",
+                      "subtitle": "el detective",
+                      "authors": [
+                        "Miguel de Cervantes",
+                        "Galileo Galilei",
+                        "Luilli"
+                      ],
+                      "editionYear": 1990,
+                      "publisher": "Circulo de lectores",
+                      "legalDeposit": "Depósito legal: 5",
+                      "cdu": {
+                        "id": 849,
+                        "code": "296",
+                        "description": "Judaísmo\n"
+                      },
+                      "location": "Estanteria juvenil",
+                      "category": {
+                        "id": 6,
+                        "description": "BOOK"
+                      },
+                      "note": "The best note",
+                      "loanable": true
+                    },
+                    "copyNumber": "COPYNUMBER4",
+                    "addedOn": "2016-05-31T00:00:00+0000",
+                    "lost": false,
+                    "damaged": false,
+                    "available": true
+                  },
+                  "loanDate": "2016-06-01T00:00:00+0000"
+                }
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No item found"
+                  }
+                }
+
+        500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+    delete:
+      description: Delete the specified loan
+      responses:
+        204:
+
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No item found"
+                  }
+                }
+
+        500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+                
+    patch:
+      description: Update the specified loan
+      body:
+        application/json:
+          schema: |
+            {
+              "$schema": "http://json-schema.org/draft-03/schema",
+              "type": "object",
+              "description": "Changes in the loan",
+              "properties":
+                {
+                  "reader": {"type": "integer"},
+                  "copy":{"type": "integer"}
+                }
+            }
+          example: |
+            {
+              "loan":
+                {
+                  "reader": 23,
+                  "copy": 42
+                }
+            }
+          
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "id": 42,
+                  "reader": {
+                    "id": 23,
+                    "recordNumber": "111111111",
+                    "firstName": "Luis",
+                    "lastName": "Cavero Martínez",
+                    "email": "luiscavero91@gmail.com"
+                  },
+                  "copy": {
+                    "id": 42,
+                    "article": {
+                      "id": 16,
+                      "refNumber": "343434345",
+                      "isbn": "65656565656-5",
+                      "title": "Alfagann es Flanagan",
+                      "subtitle": "el detective",
+                      "authors": [
+                        "Miguel de Cervantes",
+                        "Galileo Galilei",
+                        "Luilli"
+                      ],
+                      "editionYear": 1990,
+                      "publisher": "Circulo de lectores",
+                      "legalDeposit": "Depósito legal: 5",
+                      "cdu": {
+                        "id": 849,
+                        "code": "296",
+                        "description": "Judaísmo\n"
+                      },
+                      "location": "Estanteria juvenil",
+                      "category": {
+                        "id": 6,
+                        "description": "BOOK"
+                      },
+                      "note": "The best note",
+                      "loanable": true
+                    },
+                    "copyNumber": "COPYNUMBER4",
+                    "addedOn": "2016-05-31T00:00:00+0000",
+                    "lost": false,
+                    "damaged": false,
+                    "available": true
+                  },
+                  "loanDate": "2016-06-01T00:00:00+0000"
+                }
+        400:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 400,
+                    "message": "Bad Request"
+                  }
+                }
+
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No item found"
+                  }
+                }
+
+        500:
+            body:
+              application/json:
+                example: |
+                  {
+                    "error": {
+                      "code": 500,
+                      "message": "Internal Server Error"
+                    }
+                  }
+
+/cdus:
+  displayName: CDUs
+  get:
+    description: Retrieve the list of CDUs
+    responses:
+      200:
+        body:
+          application/json:
+            schema: |
+              {
+              "$schema": "http://json-schema.org/draft-03/schema",
+              "type": "array",
+              "description": "The CDUs list"
+              }
+            example: |
+              [
+                {
+                  "id": 786,
+                  "code": "0",
+                  "description": "Generalidades\n"
+                },
+                {
+                  "id": 787,
+                  "code": "001",
+                  "description": "Ciencia y conocimiento en general. Organización del trabajo intelectual. Divulgación de la ciencia\n"
+                },
+                {
+                  "id": 788,
+                  "code": "001.83",
+                  "description": "Cooperación intelectual (técnica y científica). Teoría\n"
+                },
+                {
+                  "id": 789,
+                  "code": "002",
+                  "description": "Documentación en general. Producción documental. Centros de documentación\n"
+                },
+                {
+                  "id": 790,
+                  "code": "003",
+                  "description": "Escritura. Sistemas de escritura. Signos y símbolos. Representaciones gráficas en general\n"
+                },
+                {
+                  "id": 791,
+                  "code": "004",
+                  "description": "Ciencia y tecnología de los ordenadores. Informática\n"
+                },
+                {
+                  "id": 792,
+                  "code": "004.3",
+                  "description": "«Hardware». Componentes físicos del ordenador, máquinas\n"
+                }
+              ]
+      404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No list found"
+                  }
+                }
+
+      500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+  /{id}:
+    uriParameters:
+      id:
+        description: The uniquely number which indentifies the CDU
+        type: integer
+    get:
+      description: Retrieve the specified CDU
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "id": 792,
+                  "code": "004.3",
+                  "description": "«Hardware». Componentes físicos del ordenador, máquinas\n"
+                }
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No item found"
+                  }
+                }
+
+        500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+/categories:
+  displayName: Categories
+  get:
+    description: Retrieve the list of categories
+    responses:
+      200:
+        body:
+          application/json:
+            schema: |
+              {
+              "$schema": "http://json-schema.org/draft-03/schema",
+              "type": "array",
+              "description": "The Categories list"
+              }
+            example: |
+              [
+                {
+                  "id": 6,
+                  "description": "BOOK"
+                },
+                {
+                  "id": 7,
+                  "description": "CD"
+                },
+                {
+                  "id": 8,
+                  "description": "DVD"
+                },
+                {
+                  "id": 10,
+                  "description": "OTHER"
+                },
+                {
+                  "id": 9,
+                  "description": "VHS"
+                }
+              ]
+      404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No list found"
+                  }
+                }
+
+      500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }
+
+  /{id}:
+    uriParameters:
+      id:
+        description: The uniquely number which indentifies the category
+        type: integer
+    get:
+      description: Retrieve the specified category
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "id": 6,
+                  "description": "BOOK"
+                }
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 404,
+                    "message": "No item found"
+                  }
+                }
+
+        500:
+          body:
+            application/json:
+              example: |
+                {
+                  "error": {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+                }

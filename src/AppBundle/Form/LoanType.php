@@ -18,6 +18,7 @@ class LoanType extends AbstractType
         $builder
             ->add('reader', EntityType::class, array('class' => 'AppBundle\Entity\Reader', 'invalid_message' => 'Reader ID is not valid'))
             ->add('copy', EntityType::class, array('class' => 'AppBundle\Entity\Copy', 'invalid_message' => 'Copy ID is not valid'))
+            ->add('returnDate', DateType::class, array('widget' => 'single_text', 'invalid_message' => ' returnDate date format is invalid (YYYY-MM-DD)', 'required' => false))
         ;
     }
     
